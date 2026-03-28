@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KORSBÆK QUIZ</title>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Oswald:wght@300;400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Oswald:wght@300;400;600&family=Crete+Round&display=swap"
     rel="stylesheet">
   <style>
     :root {
@@ -949,8 +949,8 @@
 
     /* SVG scene visibility */
     .korsbaek-day-scene { display: none; }
-    [data-theme="light"] .korsbæk-scene { display: none; }
-    [data-theme="light"] .korsbaek-day-scene { display: block; }
+    [data-theme="light"] #nightScene { display: none !important; }
+    [data-theme="light"] .korsbaek-day-scene { display: block !important; }
 
     /* ══════════════════════════════════════════════════
        LYST TEMA — Periodens dagslys / Art Deco
@@ -988,9 +988,39 @@
       box-shadow: 0 0 0 4px #f4edd8, 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(139,105,20,0.04);
     }
 
+    /* Crete Round — nærmeste Google Font til Matadors Souvenir */
+    [data-theme="light"] body {
+      font-family: 'Crete Round', serif;
+    }
     [data-theme="light"] .logo-main {
-      color: #2c1a0e;
-      text-shadow: 2px 2px 0 rgba(139,105,20,0.2);
+      font-family: 'Crete Round', serif;
+      color: #5a1a0a;
+      text-shadow: 2px 3px 0 rgba(90,26,10,0.15);
+      letter-spacing: 4px;
+    }
+    [data-theme="light"] .logo-sub,
+    [data-theme="light"] .logo-sub2 {
+      font-family: 'Crete Round', serif;
+      letter-spacing: 6px;
+    }
+    [data-theme="light"] .question-text {
+      font-family: 'Crete Round', serif;
+    }
+    [data-theme="light"] .gameover-score,
+    [data-theme="light"] .scores-title,
+    [data-theme="light"] .stat-value,
+    [data-theme="light"] .score-value {
+      font-family: 'Crete Round', serif;
+      color: #5a1a0a;
+    }
+    [data-theme="light"] .rf-btn {
+      font-family: 'Crete Round', serif;
+    }
+    /* Varm terrakotta-rød — Matadors karakteristiske farve */
+    [data-theme="light"] {
+      --gold: #7a3a10;
+      --gold-light: #5a1a0a;
+      --gold-dark: #4a2808;
     }
 
     [data-theme="light"] .btn-primary {
@@ -1129,7 +1159,7 @@
       <div class="logo-sub2">Quiz · 1929–1947</div>
     </div>
     <!-- Korsbæk natscene -->
-    <svg class="korsbæk-scene" viewBox="0 0 600 155" xmlns="http://www.w3.org/2000/svg"
+    <svg class="korsbæk-scene" id="nightScene" viewBox="0 0 600 155" xmlns="http://www.w3.org/2000/svg"
       style="max-width:600px;width:100%;display:block;margin:0 auto 4px;">
       <defs>
         <linearGradient id="nightsky" x1="0" y1="0" x2="0" y2="1">
