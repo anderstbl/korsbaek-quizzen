@@ -924,31 +924,56 @@
       }
     }
 
-    /* SVG scene — dag altid synlig, nat aldrig */
-    .korsbaek-day-scene { display: block; }
+    /* SVG scene — begge skjulte, bruger rigtige fotos nu */
+    .korsbaek-day-scene { display: none !important; }
     #nightScene { display: none !important; }
+
+    /* Matador brand-logo */
+    .matador-brand-logo {
+      width: min(240px, 72vw);
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    /* Skjern's Magasin foto */
+    .korsbaek-photo-wrap {
+      max-width: 600px;
+      width: 100%;
+      overflow: hidden;
+      margin: 0 auto 4px;
+      border: 2px solid #1A4838;
+      box-shadow: 0 2px 16px rgba(26,72,56,0.18);
+    }
+    .korsbaek-photo {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+      filter: saturate(0.92) contrast(1.04);
+    }
 
     /* ══════════════════════════════════════════════════
        MATADOR TEMA — Ungermann farvepalette
     ══════════════════════════════════════════════════ */
     [data-theme="light"] {
-      --gold:       #C4522A;   /* terrakotta — tagsten/accenter */
-      --gold-light: #D46030;   /* lysere terrakotta */
-      --gold-dark:  #8B3010;   /* mørkere terrakotta */
-      --bg:         #FAF6EF;   /* posterens hvide/creme */
-      --bg2:        #F0E8D8;   /* let varm */
-      --bg3:        #E4D4C0;   /* endnu varmere */
+      --gold:       #1A4838;   /* Matador flaskegrøn — Skjerns skilt */
+      --gold-light: #226048;   /* lysere grøn */
+      --gold-dark:  #0E2820;   /* mørkere grøn */
+      --bg:         #FAF6EF;   /* posterens hvid/creme */
+      --bg2:        #EDE8D8;   /* let varm */
+      --bg3:        #DDD4C0;   /* endnu varmere */
       --red:        #B83010;   /* fejl-rød */
-      --green:      #2E7A45;   /* korrekt-grøn */
-      --text:       #2A2A3A;   /* kul/navy — Ungermann-konturer */
+      --green:      #226048;   /* korrekt-grøn */
+      --text:       #2A2A3A;   /* kul/navy */
       --text-dim:   #7A7A8A;   /* nedtonet */
     }
 
     [data-theme="light"] body {
       background-color: #FAF6EF;
       background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(196,82,42,0.03) 40px, rgba(196,82,42,0.03) 41px),
-        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(196,82,42,0.03) 40px, rgba(196,82,42,0.03) 41px);
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(26,72,56,0.03) 40px, rgba(26,72,56,0.03) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(26,72,56,0.03) 40px, rgba(26,72,56,0.03) 41px);
     }
 
     [data-theme="light"] body::after {
@@ -957,11 +982,11 @@
     }
 
     [data-theme="light"] #screen-start {
-      background: radial-gradient(ellipse at 50% 20%, #EDE4D4 0%, #FAF6EF 70%);
+      background: radial-gradient(ellipse at 50% 20%, #E8EEE8 0%, #FAF6EF 70%);
     }
 
     [data-theme="light"] .deco-border {
-      box-shadow: 0 0 0 4px #FAF6EF, 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(196,82,42,0.03);
+      box-shadow: 0 0 0 4px #FAF6EF, 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(26,72,56,0.03);
     }
 
     /* Crete Round — nærmeste Google Font til Matadors Souvenir */
@@ -970,8 +995,8 @@
     }
     [data-theme="light"] .logo-main {
       font-family: 'Crete Round', serif;
-      color: #C4522A;
-      text-shadow: 2px 3px 0 rgba(139,48,16,0.18);
+      color: #1A4838;
+      text-shadow: 2px 3px 0 rgba(14,40,32,0.18);
       letter-spacing: 4px;
     }
     [data-theme="light"] .logo-sub,
@@ -987,32 +1012,32 @@
     [data-theme="light"] .stat-value,
     [data-theme="light"] .score-value {
       font-family: 'Crete Round', serif;
-      color: #C4522A;
+      color: #1A4838;
     }
     [data-theme="light"] .rf-btn {
       font-family: 'Crete Round', serif;
     }
 
     [data-theme="light"] .btn-primary {
-      background: #C4522A;
+      background: #1A4838;
       color: #FAF6EF;
-      box-shadow: 0 2px 10px rgba(196,82,42,0.3);
+      box-shadow: 0 2px 10px rgba(26,72,56,0.3);
     }
     @media (hover: hover) {
     [data-theme="light"] .btn-primary:hover {
-      background: #D46030;
-      box-shadow: 0 4px 18px rgba(196,82,42,0.4);
+      background: #226048;
+      box-shadow: 0 4px 18px rgba(26,72,56,0.4);
       transform: translateY(-2px);
     }
     [data-theme="light"] .btn-secondary:hover {
-      border-color: #C4522A;
-      color: #C4522A;
-      background: rgba(196,82,42,0.05);
+      border-color: #1A4838;
+      color: #1A4838;
+      background: rgba(26,72,56,0.05);
     }
     }
     [data-theme="light"] .btn-secondary {
-      color: #2A2A3A;
-      border-color: rgba(42,42,58,0.3);
+      color: #1A4838;
+      border-color: rgba(26,72,56,0.4);
       background: transparent;
     }
 
@@ -1121,10 +1146,12 @@
     <svg class="deco-corner deco-bl" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M2,58 L58,58 L58,52 L8,52 L8,2 L2,2 Z" fill="none" stroke="#8a6f28" stroke-width="1"/><path d="M2,58 L22,58 L22,56 L4,56 L4,38 L2,38 Z" fill="#8a6f28"/><circle cx="14" cy="46" r="4" fill="none" stroke="#c8a84b" stroke-width="1"/><path d="M10,46 L14,42 L18,46 L14,50 Z" fill="#c8a84b" opacity="0.6"/></svg>
     <svg class="deco-corner deco-br" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M58,58 L2,58 L2,52 L52,52 L52,2 L58,2 Z" fill="none" stroke="#8a6f28" stroke-width="1"/><path d="M58,58 L38,58 L38,56 L56,56 L56,38 L58,38 Z" fill="#8a6f28"/><circle cx="46" cy="46" r="4" fill="none" stroke="#c8a84b" stroke-width="1"/><path d="M42,46 L46,42 L50,46 L46,50 Z" fill="#c8a84b" opacity="0.6"/></svg>
 
-    <div style="margin-bottom:16px;margin-top:8px">
-      <div class="logo-sub">Velkommen til</div>
-      <div class="logo-main">KORSBÆK</div>
-      <div class="logo-sub2">Quiz · 1929–1947</div>
+    <img class="matador-brand-logo"
+         src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Matador_text_logo.svg"
+         alt="Matador">
+    <div style="margin-bottom:12px;margin-top:4px">
+      <div class="logo-sub">Korsbæk Quiz</div>
+      <div class="logo-sub2">1929–1947</div>
     </div>
     <!-- Korsbæk natscene -->
     <svg class="korsbæk-scene" id="nightScene" viewBox="0 0 600 155" xmlns="http://www.w3.org/2000/svg"
@@ -1695,6 +1722,13 @@
       <!-- Vignette -->
       <rect width="600" height="155" fill="url(#dayvign2)"/>
     </svg>
+
+    <!-- Skjerns Magasin — Korsbæk på Bakken (Wikimedia Commons, Public Domain) -->
+    <div class="korsbaek-photo-wrap">
+      <img class="korsbaek-photo"
+           src="https://upload.wikimedia.org/wikipedia/commons/2/20/Skjerns_Magasin%2C_2017-05-12.jpg"
+           alt="Skjern's Magasin, Korsbæk">
+    </div>
 
     <div class="ornament">— ◆ ◆ ◆ —</div>
     <div class="start-desc">
