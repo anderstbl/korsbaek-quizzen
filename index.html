@@ -2698,7 +2698,7 @@
       const correct = S.correct;
       const name = (document.getElementById('initialsInput').value.trim()) || 'Korsbækkener';
       const emojis = score >= 2000 ? '🏆🥇' : score >= 1200 ? '🎩✨' : score >= 600 ? '👏🎶' : '📺';
-      const text = `${emojis} ${name} fik ${score} point i Korsbæk-quizzen! (${correct} rigtige svar)\nKan du slå det? 🎭\n👉 korsbæk-quiz.html`;
+      const text = `${emojis} ${name} fik ${score} point i Korsbæk-quizzen! (${correct} rigtige svar)\nKan du slå det? 🎭\n👉 https://matador-quizzen.vercel.app`;
       const shareData = { title: 'Korsbæk-quizzen', text };
       const btn = document.querySelector('[onclick="shareScore()"]');
       if (navigator.share) {
@@ -2713,7 +2713,7 @@
           // Fallback: tekstboks til manuel kopiering
           const box = document.createElement('textarea');
           box.value = text;
-          box.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;padding:12px;font-size:13px;background:#2a1e0a;color:#f5deb3;border:1px solid #c8a84b;border-radius:8px;z-index:9999;';
+          box.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;padding:12px;font-size:13px;background:#FAF6EF;color:#2A2A3A;border:2px solid #1A4838;border-radius:8px;z-index:9999;';
           document.body.appendChild(box); box.select();
           setTimeout(() => box.remove(), 8000);
         }
