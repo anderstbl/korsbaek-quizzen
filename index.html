@@ -1743,7 +1743,7 @@
     </div>
     <div id="homeTop10" style="width:100%;max-width:480px;margin-top:28px;">
       <div
-        style="font-family:'Crete Round',serif;color:#C4522A;font-size:13px;letter-spacing:3px;text-align:center;margin-bottom:10px;opacity:0.8;">
+        style="font-family:'Crete Round',serif;color:#1A4838;font-size:13px;letter-spacing:3px;text-align:center;margin-bottom:10px;opacity:0.85;">
         — TOP 10 —</div>
       <div id="homeTop10Content" style="color:#2A2A3A;font-size:13px;text-align:center;letter-spacing:1px;">Henter
         scores…</div>
@@ -2768,13 +2768,13 @@
         if (!scores.length) { el.innerHTML = '<em>Ingen scores endnu — vær den første!</em>'; return; }
         const rows = scores.map((s, i) => {
           const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
-          return `<div style="display:flex;justify-content:space-between;padding:3px 12px;${i % 2 === 0 ? 'background:rgba(200,168,75,0.04)' : ''}">
-        <span style="color:#7a6838;min-width:22px">${i + 1}.</span>
-        <span style="flex:1;text-align:left;color:#c8a84b;letter-spacing:1px;">${medal}${s.initials}</span>
-        <span style="color:#e0c060;font-weight:bold;">${s.score.toLocaleString('da-DK')}</span>
+          return `<div style="display:flex;justify-content:space-between;padding:3px 12px;${i % 2 === 0 ? 'background:rgba(26,72,56,0.04)' : ''}">
+        <span style="color:#7A7A8A;min-width:22px">${i + 1}.</span>
+        <span style="flex:1;text-align:left;color:#1A4838;letter-spacing:1px;">${medal}${s.initials}</span>
+        <span style="color:#1A4838;font-weight:bold;">${s.score.toLocaleString('da-DK')}</span>
       </div>`;
         }).join('');
-        el.innerHTML = `<div style="border:1px solid rgba(200,168,75,0.15);border-radius:6px;overflow:hidden;padding:4px 0;">${rows}</div>`;
+        el.innerHTML = `<div style="border:1px solid rgba(26,72,56,0.2);border-radius:2px;overflow:hidden;padding:4px 0;">${rows}</div>`;
       } catch (e) { el.innerHTML = ''; }
     }
 
