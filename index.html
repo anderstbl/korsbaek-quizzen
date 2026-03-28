@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da" data-theme="dark">
+<html lang="da" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -924,68 +924,44 @@
       }
     }
 
-    /* ══════════════════════════════════════════════════
-       TEMA-KNAP
-    ══════════════════════════════════════════════════ */
-    .theme-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-      width: 40px;
-      height: 40px;
-      background: var(--bg2);
-      border: 1px solid var(--gold-dark);
-      color: var(--gold);
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      opacity: 0.65;
-    }
-    .theme-toggle:hover { opacity: 1; }
-
-    /* SVG scene visibility */
-    .korsbaek-day-scene { display: none; }
-    [data-theme="light"] #nightScene { display: none !important; }
-    [data-theme="light"] .korsbaek-day-scene { display: block !important; }
+    /* SVG scene — dag altid synlig, nat aldrig */
+    .korsbaek-day-scene { display: block; }
+    #nightScene { display: none !important; }
 
     /* ══════════════════════════════════════════════════
-       LYST TEMA — Periodens dagslys / Art Deco
+       MATADOR TEMA — Ungermann farvepalette
     ══════════════════════════════════════════════════ */
     [data-theme="light"] {
-      --gold: #8B6914;
-      --gold-light: #6b4e0a;
-      --gold-dark: #5a4008;
-      --bg: #f4edd8;
-      --bg2: #ebe0c8;
-      --bg3: #ddd0b4;
-      --red: #a82218;
-      --green: #1e7030;
-      --text: #2c1a0e;
-      --text-dim: #7a6040;
+      --gold:       #C4522A;   /* terrakotta — tagsten/accenter */
+      --gold-light: #D46030;   /* lysere terrakotta */
+      --gold-dark:  #8B3010;   /* mørkere terrakotta */
+      --bg:         #FAF6EF;   /* posterens hvide/creme */
+      --bg2:        #F0E8D8;   /* let varm */
+      --bg3:        #E4D4C0;   /* endnu varmere */
+      --red:        #B83010;   /* fejl-rød */
+      --green:      #2E7A45;   /* korrekt-grøn */
+      --text:       #2A2A3A;   /* kul/navy — Ungermann-konturer */
+      --text-dim:   #7A7A8A;   /* nedtonet */
     }
 
     [data-theme="light"] body {
-      background-color: #f4edd8;
+      background-color: #FAF6EF;
       background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(139,105,20,0.04) 40px, rgba(139,105,20,0.04) 41px),
-        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(139,105,20,0.04) 40px, rgba(139,105,20,0.04) 41px);
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(196,82,42,0.03) 40px, rgba(196,82,42,0.03) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(196,82,42,0.03) 40px, rgba(196,82,42,0.03) 41px);
     }
 
     [data-theme="light"] body::after {
-      opacity: 0.3;
+      opacity: 0.25;
       mix-blend-mode: multiply;
     }
 
     [data-theme="light"] #screen-start {
-      background: radial-gradient(ellipse at 50% 20%, #ead8b4 0%, #f4edd8 70%);
+      background: radial-gradient(ellipse at 50% 20%, #EDE4D4 0%, #FAF6EF 70%);
     }
 
     [data-theme="light"] .deco-border {
-      box-shadow: 0 0 0 4px #f4edd8, 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(139,105,20,0.04);
+      box-shadow: 0 0 0 4px #FAF6EF, 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(196,82,42,0.03);
     }
 
     /* Crete Round — nærmeste Google Font til Matadors Souvenir */
@@ -994,8 +970,8 @@
     }
     [data-theme="light"] .logo-main {
       font-family: 'Crete Round', serif;
-      color: #5a1a0a;
-      text-shadow: 2px 3px 0 rgba(90,26,10,0.15);
+      color: #C4522A;
+      text-shadow: 2px 3px 0 rgba(139,48,16,0.18);
       letter-spacing: 4px;
     }
     [data-theme="light"] .logo-sub,
@@ -1011,38 +987,32 @@
     [data-theme="light"] .stat-value,
     [data-theme="light"] .score-value {
       font-family: 'Crete Round', serif;
-      color: #5a1a0a;
+      color: #C4522A;
     }
     [data-theme="light"] .rf-btn {
       font-family: 'Crete Round', serif;
     }
-    /* Varm terrakotta-rød — Matadors karakteristiske farve */
-    [data-theme="light"] {
-      --gold: #7a3a10;
-      --gold-light: #5a1a0a;
-      --gold-dark: #4a2808;
-    }
 
     [data-theme="light"] .btn-primary {
-      background: #2c1a0e;
-      color: #f4edd8;
-      box-shadow: 0 2px 10px rgba(44,26,14,0.25);
+      background: #C4522A;
+      color: #FAF6EF;
+      box-shadow: 0 2px 10px rgba(196,82,42,0.3);
     }
     @media (hover: hover) {
     [data-theme="light"] .btn-primary:hover {
-      background: #4a2c14;
-      box-shadow: 0 4px 18px rgba(44,26,14,0.3);
+      background: #D46030;
+      box-shadow: 0 4px 18px rgba(196,82,42,0.4);
       transform: translateY(-2px);
     }
     [data-theme="light"] .btn-secondary:hover {
-      border-color: #2c1a0e;
-      color: #2c1a0e;
-      background: rgba(44,26,14,0.05);
+      border-color: #C4522A;
+      color: #C4522A;
+      background: rgba(196,82,42,0.05);
     }
     }
     [data-theme="light"] .btn-secondary {
-      color: #2c1a0e;
-      border-color: rgba(44,26,14,0.3);
+      color: #2A2A3A;
+      border-color: rgba(42,42,58,0.3);
       background: transparent;
     }
 
@@ -1135,8 +1105,6 @@
 </head>
 
 <body>
-
-  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Skift tema">☀️</button>
 
   <div class="feedback-overlay" id="feedbackOverlay">
     <div class="feedback-text" id="feedbackText"></div>
@@ -1741,9 +1709,9 @@
     </div>
     <div id="homeTop10" style="width:100%;max-width:480px;margin-top:28px;">
       <div
-        style="font-family:'Playfair Display',serif;color:#c8a84b;font-size:13px;letter-spacing:3px;text-align:center;margin-bottom:10px;opacity:0.7;">
+        style="font-family:'Crete Round',serif;color:#C4522A;font-size:13px;letter-spacing:3px;text-align:center;margin-bottom:10px;opacity:0.8;">
         — TOP 10 —</div>
-      <div id="homeTop10Content" style="color:#9a8050;font-size:13px;text-align:center;letter-spacing:1px;">Henter
+      <div id="homeTop10Content" style="color:#2A2A3A;font-size:13px;text-align:center;letter-spacing:1px;">Henter
         scores…</div>
     </div>
   </div>
@@ -1830,23 +1798,6 @@
   <script>
     // ============================================================
     // ── TEMA TOGGLE ──────────────────────────────────
-    function toggleTheme() {
-      const html = document.documentElement;
-      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      html.setAttribute('data-theme', next);
-      localStorage.setItem('korsbaek-theme', next);
-      document.getElementById('themeToggle').textContent = next === 'light' ? '🌙' : '☀️';
-    }
-    (function initTheme() {
-      const saved = localStorage.getItem('korsbaek-theme');
-      if (saved) document.documentElement.setAttribute('data-theme', saved);
-      window.addEventListener('DOMContentLoaded', function () {
-        const t = document.documentElement.getAttribute('data-theme') || 'dark';
-        const btn = document.getElementById('themeToggle');
-        if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
-      });
-    })();
-
     // SUPABASE CONFIG
     // ============================================================
     const SB_URL = 'https://ovhxkodhxkirnpcougkx.supabase.co';
