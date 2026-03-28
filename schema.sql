@@ -914,27 +914,27 @@ INSERT INTO questions (type, category, question, answer, options, episode, ep_ti
 -- ── BILLEDE: Gæt karakteren ud fra et rigtigt skuespiller-foto (Wikipedia) ──
 INSERT INTO questions (type, category, question, answer, options, image_url) VALUES
 
-('fact','billede','Hvem spiller denne skuespiller i Matador?',
+('fact','billede','Hvilken karakter spilles af denne skuespiller?',
  'Mads Skjern',
  '["Mads Skjern","Hans Christian Varnæs","Jørgen Varnæs","Kristen Skjern"]',
  'https://upload.wikimedia.org/wikipedia/commons/0/0c/J%C3%B8rgen_Buckh%C3%B8j.jpg'),
 
-('fact','billede','Hvem spiller denne skuespiller i Matador?',
+('fact','billede','Hvilken karakter spilles af denne skuespiller?',
  'Ingeborg Skjern',
  '["Ingeborg Skjern","Agnes Jensen","Maude Varnæs","Elisabeth Friis"]',
  'https://upload.wikimedia.org/wikipedia/commons/e/eb/20230412_Ghita_N%C3%B8rby.jpg'),
 
-('fact','billede','Hvem spiller denne skuespiller i Matador?',
+('fact','billede','Hvilken karakter spilles af denne skuespiller?',
  'Maude Varnæs',
  '["Maude Varnæs","Ingeborg Skjern","Agnes Jensen","Elisabeth Friis"]',
  'https://upload.wikimedia.org/wikipedia/commons/8/8b/Malene_Schwartz%2C_actor.jpg'),
 
-('fact','billede','Hvem spiller denne skuespiller i Matador?',
+('fact','billede','Hvilken karakter spilles af denne skuespiller?',
  'Hans Christian Varnæs',
  '["Hans Christian Varnæs","Jørgen Varnæs","Mads Skjern","Skjold Hansen"]',
  'https://upload.wikimedia.org/wikipedia/commons/6/6e/Holger_Juul_Hansen_%28skuespiller%29.jpg'),
 
-('fact','billede','Hvem spiller denne skuespiller i Matador?',
+('fact','billede','Hvilken karakter spilles af denne skuespiller?',
  'Herbert Schmidt',
  '["Herbert Schmidt","Rudolf Schwann","Doktor Hansen","Jørgen Varnæs"]',
  'https://upload.wikimedia.org/wikipedia/commons/0/05/Paul_H%C3%BCttel_%28skuespiller%29.jpg');
