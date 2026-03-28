@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" data-theme="dark">
 
 <head>
   <meta charset="UTF-8">
@@ -924,10 +924,189 @@
       }
     }
 
+    /* ══════════════════════════════════════════════════
+       TEMA-KNAP
+    ══════════════════════════════════════════════════ */
+    .theme-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      width: 40px;
+      height: 40px;
+      background: var(--bg2);
+      border: 1px solid var(--gold-dark);
+      color: var(--gold);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      opacity: 0.65;
+    }
+    .theme-toggle:hover { opacity: 1; }
+
+    /* SVG scene visibility */
+    .korsbaek-day-scene { display: none; }
+    [data-theme="light"] .korsbæk-scene { display: none; }
+    [data-theme="light"] .korsbaek-day-scene { display: block; }
+
+    /* ══════════════════════════════════════════════════
+       LYST TEMA — Periodens dagslys / Art Deco
+    ══════════════════════════════════════════════════ */
+    [data-theme="light"] {
+      --gold: #8B6914;
+      --gold-light: #6b4e0a;
+      --gold-dark: #5a4008;
+      --bg: #f4edd8;
+      --bg2: #ebe0c8;
+      --bg3: #ddd0b4;
+      --red: #a82218;
+      --green: #1e7030;
+      --text: #2c1a0e;
+      --text-dim: #7a6040;
+    }
+
+    [data-theme="light"] body {
+      background-color: #f4edd8;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(139,105,20,0.04) 40px, rgba(139,105,20,0.04) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(139,105,20,0.04) 40px, rgba(139,105,20,0.04) 41px);
+    }
+
+    [data-theme="light"] body::after {
+      opacity: 0.3;
+      mix-blend-mode: multiply;
+    }
+
+    [data-theme="light"] #screen-start {
+      background: radial-gradient(ellipse at 50% 20%, #ead8b4 0%, #f4edd8 70%);
+    }
+
+    [data-theme="light"] .deco-border {
+      box-shadow: 0 0 0 4px #f4edd8, 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(139,105,20,0.04);
+    }
+
+    [data-theme="light"] .logo-main {
+      color: #2c1a0e;
+      text-shadow: 2px 2px 0 rgba(139,105,20,0.2);
+    }
+
+    [data-theme="light"] .btn-primary {
+      background: #2c1a0e;
+      color: #f4edd8;
+      box-shadow: 0 2px 10px rgba(44,26,14,0.25);
+    }
+    @media (hover: hover) {
+    [data-theme="light"] .btn-primary:hover {
+      background: #4a2c14;
+      box-shadow: 0 4px 18px rgba(44,26,14,0.3);
+      transform: translateY(-2px);
+    }
+    [data-theme="light"] .btn-secondary:hover {
+      border-color: #2c1a0e;
+      color: #2c1a0e;
+      background: rgba(44,26,14,0.05);
+    }
+    }
+    [data-theme="light"] .btn-secondary {
+      color: #2c1a0e;
+      border-color: rgba(44,26,14,0.3);
+      background: transparent;
+    }
+
+    [data-theme="light"] .option-btn {
+      background: #ebe0c8;
+      color: #2c1a0e;
+      border-color: rgba(139,105,20,0.2);
+    }
+    @media (hover: hover) {
+    [data-theme="light"] .option-btn:hover:not(:disabled) {
+      background: #ddd0b4;
+      border-color: var(--gold);
+      color: #2c1a0e;
+    }
+    }
+    [data-theme="light"] .option-btn::before { background: var(--gold); }
+    [data-theme="light"] .option-btn.correct {
+      background: rgba(30,112,48,0.12);
+      border-color: #1e7030;
+      color: #155422;
+    }
+    [data-theme="light"] .option-btn.correct::before { background: #1e7030; }
+    [data-theme="light"] .option-btn.wrong {
+      background: rgba(168,34,24,0.1);
+      border-color: #a82218;
+      color: #801810;
+    }
+    [data-theme="light"] .option-btn.wrong::before { background: #a82218; }
+
+    [data-theme="light"] .rf-btn.real-btn { color:#1e7030; border-color:rgba(30,112,48,0.4); }
+    [data-theme="light"] .rf-btn.fake-btn { color:#a82218; border-color:rgba(168,34,24,0.4); }
+    @media (hover: hover) {
+    [data-theme="light"] .rf-btn.real-btn:hover { background:rgba(30,112,48,0.08); border-color:#1e7030; }
+    [data-theme="light"] .rf-btn.fake-btn:hover { background:rgba(168,34,24,0.08); border-color:#a82218; }
+    }
+    [data-theme="light"] .rf-btn.correct { background:rgba(30,112,48,0.12); border-color:#1e7030; }
+    [data-theme="light"] .rf-btn.wrong   { background:rgba(168,34,24,0.1);  border-color:#a82218; }
+
+    [data-theme="light"] .timer-container { background: #ddd0b4; }
+    [data-theme="light"] .timer-bar { background: var(--gold); box-shadow: none; }
+    [data-theme="light"] .timer-bar.warning { background: var(--red); box-shadow: none; }
+
+    [data-theme="light"] .initials-input {
+      background: #ebe0c8;
+      border-color: var(--gold-dark);
+      color: #2c1a0e;
+    }
+    [data-theme="light"] .initials-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 10px rgba(139,105,20,0.15);
+    }
+
+    [data-theme="light"] .scores-table th { border-bottom-color: var(--gold-dark); }
+    [data-theme="light"] .scores-table td { border-bottom-color: rgba(139,105,20,0.1); }
+    [data-theme="light"] .scores-table tr.highlight td {
+      background: rgba(139,105,20,0.07);
+      color: #2c1a0e;
+    }
+    [data-theme="light"] .scores-table .initials-cell { color: var(--gold); }
+
+    [data-theme="light"] .combo-badge      { background: #2c1a0e; color: #f4edd8; }
+    [data-theme="light"] .combo-explosion  { color: #2c1a0e; text-shadow: 0 0 30px rgba(139,105,20,0.4); }
+    [data-theme="light"] .speed-toast      { background: #2c1a0e; color: #f4edd8; }
+    [data-theme="light"] .feedback-text.correct { color: #1e7030; }
+    [data-theme="light"] .feedback-text.wrong   { color: #a82218; }
+    [data-theme="light"] .screen-flash.flash-green { background: rgba(30,112,48,0.1); }
+    [data-theme="light"] .screen-flash.flash-red   { background: rgba(168,34,24,0.15); }
+
+    [data-theme="light"] .char-illustration {
+      filter: sepia(0.15) contrast(1.05);
+      border-color: rgba(139,105,20,0.25);
+      background: rgba(244,237,216,0.4);
+    }
+
+    [data-theme="light"] .rf-explanation { border-top-color: rgba(139,105,20,0.15); }
+    [data-theme="light"] .blank { border-bottom-color: var(--gold); color: var(--gold); }
+
+    /* Badges — lyst tema */
+    [data-theme="light"] .round-badge.fill       { color:#14607f; border-color:#14607f; background:rgba(20,96,127,0.07); }
+    [data-theme="light"] .round-badge.who        { color:#3a3080; border-color:#3a3080; background:rgba(58,48,128,0.07); }
+    [data-theme="light"] .round-badge.real       { color:#7a5500; border-color:#7a5500; background:rgba(122,85,0,0.07); }
+    [data-theme="light"] .round-badge.handling   { color:#246020; border-color:#246020; background:rgba(36,96,32,0.07); }
+    [data-theme="light"] .round-badge.tidslinje  { color:#7a3a10; border-color:#7a3a10; background:rgba(122,58,16,0.07); }
+    [data-theme="light"] .round-badge.relation   { color:#7a1878; border-color:#7a1878; background:rgba(122,24,120,0.07); }
+    [data-theme="light"] .round-badge.lokation   { color:#144e7a; border-color:#144e7a; background:rgba(20,78,122,0.07); }
+    [data-theme="light"] .round-badge.billede    { color:#643a14; border-color:#643a14; background:rgba(100,58,20,0.07); }
+    [data-theme="light"] .round-badge.skuespiller { color:#345c1e; border-color:#345c1e; background:rgba(52,92,30,0.07); }
+
   </style>
 </head>
 
 <body>
+
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Skift tema">☀️</button>
 
   <div class="feedback-overlay" id="feedbackOverlay">
     <div class="feedback-text" id="feedbackText"></div>
@@ -1324,6 +1503,201 @@
         </linearGradient>
       </defs>
     </svg>
+    <!-- Korsbæk dagscene (lyst tema) -->
+    <svg class="korsbaek-day-scene" viewBox="0 0 600 155" xmlns="http://www.w3.org/2000/svg"
+      style="max-width:600px;width:100%;display:none;margin:0 auto 4px;">
+      <defs>
+        <linearGradient id="daysky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#b8d0e8"/>
+          <stop offset="55%" stop-color="#d8c8a0"/>
+          <stop offset="100%" stop-color="#e8d4b0"/>
+        </linearGradient>
+        <radialGradient id="sunglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f5e060" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#f5e060" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="dayvign2" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="transparent"/>
+          <stop offset="100%" stop-color="#c8a870" stop-opacity="0.18"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="600" height="155" fill="url(#daysky)"/>
+
+      <!-- Sun -->
+      <ellipse cx="530" cy="22" rx="50" ry="50" fill="url(#sunglow)"/>
+      <circle cx="530" cy="22" r="15" fill="#f5dc40" opacity="0.88"/>
+      <!-- Art Deco sun rays -->
+      <line x1="530" y1="2"  x2="530" y2="8"  stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+      <line x1="549" y1="7"  x2="545" y2="12" stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+      <line x1="554" y1="26" x2="547" y2="26" stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+      <line x1="549" y1="41" x2="545" y2="36" stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+      <line x1="511" y1="7"  x2="515" y2="12" stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+      <line x1="506" y1="26" x2="513" y2="26" stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+      <line x1="511" y1="41" x2="515" y2="36" stroke="#f0d030" stroke-width="1.5" opacity="0.55"/>
+
+      <!-- Clouds -->
+      <ellipse cx="75"  cy="18" rx="32" ry="10" fill="white" opacity="0.58"/>
+      <ellipse cx="96"  cy="13" rx="22" ry="8"  fill="white" opacity="0.5"/>
+      <ellipse cx="295" cy="14" rx="36" ry="10" fill="white" opacity="0.48"/>
+      <ellipse cx="318" cy="10" rx="22" ry="8"  fill="white" opacity="0.42"/>
+
+      <!-- ── KIRKETÅRN ── -->
+      <rect x="213" y="14" width="28" height="111" fill="#a08060"/>
+      <polygon points="227,2 218,14 236,14" fill="#8a6840"/>
+      <circle cx="227" cy="36" r="9" fill="#7a5830" stroke="#5a3818" stroke-width="0.8"/>
+      <circle cx="227" cy="36" r="7" fill="#c4a070"/>
+      <line x1="227" y1="36" x2="227" y2="30" stroke="#3a2010" stroke-width="1.2" opacity="0.75"/>
+      <line x1="227" y1="36" x2="232" y2="36" stroke="#3a2010" stroke-width="1"   opacity="0.75"/>
+      <rect x="219" y="58" width="7" height="12" rx="3" fill="#3a2010" opacity="0.45"/>
+      <rect x="229" y="58" width="7" height="12" rx="3" fill="#3a2010" opacity="0.38"/>
+      <rect x="207" y="110" width="40" height="45" fill="#8a6840"/>
+
+      <!-- ── BUILDINGS LEFT ── -->
+      <rect x="0"  y="55" width="48" height="100" fill="#b89060"/>
+      <rect x="8"  y="42" width="28" height="13"  fill="#b89060"/>
+      <rect x="6"  y="68" width="9"  height="12"  fill="#3a2010" opacity="0.42"/>
+      <rect x="20" y="68" width="9"  height="12"  fill="#3a2010" opacity="0.36"/>
+      <rect x="6"  y="86" width="9"  height="12"  fill="#3a2010" opacity="0.32"/>
+      <!-- Apoteket -->
+      <rect x="48" y="38" width="58" height="117" fill="#c8a870"/>
+      <rect x="56" y="28" width="34" height="10"  fill="#b09050"/>
+      <rect x="70" y="33" width="4"  height="12"  fill="#1e6830" opacity="0.85"/>
+      <rect x="66" y="37" width="12" height="4"   fill="#1e6830" opacity="0.85"/>
+      <rect x="56" y="52" width="10" height="14" rx="1" fill="#3a2010" opacity="0.38"/>
+      <rect x="72" y="52" width="10" height="14" rx="1" fill="#3a2010" opacity="0.32"/>
+      <rect x="88" y="52" width="10" height="14" rx="1" fill="#3a2010" opacity="0.38"/>
+      <rect x="56" y="74" width="10" height="14" rx="1" fill="#3a2010" opacity="0.28"/>
+      <rect x="88" y="74" width="10" height="14" rx="1" fill="#3a2010" opacity="0.32"/>
+      <!-- Korsbæk Bank -->
+      <rect x="106" y="48" width="72" height="107" fill="#d4b880"/>
+      <rect x="112" y="36" width="56" height="12"  fill="#c4a870"/>
+      <rect x="116" y="60" width="5"  height="50"  fill="#a88840" opacity="0.5"/>
+      <rect x="131" y="60" width="5"  height="50"  fill="#a88840" opacity="0.5"/>
+      <rect x="146" y="60" width="5"  height="50"  fill="#a88840" opacity="0.5"/>
+      <rect x="161" y="60" width="5"  height="50"  fill="#a88840" opacity="0.5"/>
+      <rect x="113" y="45" width="14" height="8" rx="7" fill="#3a2010" opacity="0.32"/>
+      <rect x="132" y="45" width="14" height="8" rx="7" fill="#3a2010" opacity="0.28"/>
+      <rect x="151" y="45" width="14" height="8" rx="7" fill="#3a2010" opacity="0.32"/>
+      <text x="142" y="38" fill="#4a2e10" font-size="5" font-family="serif" text-anchor="middle" letter-spacing="1" opacity="0.8">KORSBÆK BANK</text>
+
+      <!-- ── SKJERNS MAGASIN ── -->
+      <rect x="248" y="40" width="105" height="115" fill="#c8a870"/>
+      <rect x="255" y="28" width="84"  height="12"  fill="#b09050"/>
+      <rect x="248" y="108" width="105" height="8"  fill="#6a4020"/>
+      <rect x="258" y="44" width="15" height="20" rx="1" fill="#3a2010" opacity="0.38"/>
+      <rect x="280" y="44" width="15" height="20" rx="1" fill="#3a2010" opacity="0.42"/>
+      <rect x="302" y="44" width="15" height="20" rx="1" fill="#3a2010" opacity="0.35"/>
+      <rect x="324" y="44" width="15" height="20" rx="1" fill="#3a2010" opacity="0.40"/>
+      <rect x="258" y="72" width="15" height="20" rx="1" fill="#3a2010" opacity="0.30"/>
+      <rect x="280" y="72" width="15" height="20" rx="1" fill="#3a2010" opacity="0.35"/>
+      <rect x="302" y="72" width="15" height="20" rx="1" fill="#3a2010" opacity="0.26"/>
+      <rect x="324" y="72" width="15" height="20" rx="1" fill="#3a2010" opacity="0.32"/>
+      <rect x="282" y="110" width="36" height="45" fill="#7a4818"/>
+      <rect x="255" y="103" width="93" height="10" fill="#6a4020"/>
+      <text x="301" y="111" fill="#e8d4a0" font-size="6.5" font-family="serif" text-anchor="middle" letter-spacing="2" opacity="0.95">SKJERN · MANUFAKTUR</text>
+
+      <!-- ── STATIONSBYGNING ── -->
+      <rect x="360" y="50" width="95" height="105" fill="#b89060"/>
+      <rect x="368" y="38" width="70" height="12"  fill="#a07848"/>
+      <polygon points="407,26 368,38 446,38" fill="#8a6040"/>
+      <rect x="370" y="56" width="12" height="16" rx="1" fill="#3a2010" opacity="0.36"/>
+      <rect x="388" y="56" width="12" height="16" rx="1" fill="#3a2010" opacity="0.40"/>
+      <rect x="406" y="56" width="12" height="16" rx="1" fill="#3a2010" opacity="0.33"/>
+      <rect x="424" y="56" width="12" height="16" rx="1" fill="#3a2010" opacity="0.38"/>
+      <rect x="442" y="56" width="10" height="16" rx="1" fill="#3a2010" opacity="0.28"/>
+      <rect x="370" y="80" width="12" height="16" rx="1" fill="#3a2010" opacity="0.28"/>
+      <rect x="388" y="80" width="12" height="16" rx="1" fill="#3a2010" opacity="0.33"/>
+      <rect x="424" y="80" width="12" height="16" rx="1" fill="#3a2010" opacity="0.26"/>
+      <path d="M390,116 Q407,108 424,116 L424,155 L390,155 Z" fill="#6a4020"/>
+      <text x="407" y="50" fill="#4a2e10" font-size="5" font-family="serif" text-anchor="middle" letter-spacing="1" opacity="0.75">KORSBÆK STATION</text>
+
+      <!-- ── FAR RIGHT BUILDINGS ── -->
+      <rect x="455" y="60" width="52" height="95" fill="#b08050"/>
+      <rect x="462" y="48" width="32" height="12" fill="#b08050"/>
+      <rect x="464" y="70" width="9"  height="13" fill="#3a2010" opacity="0.33"/>
+      <rect x="479" y="70" width="9"  height="13" fill="#3a2010" opacity="0.28"/>
+      <rect x="464" y="90" width="9"  height="13" fill="#3a2010" opacity="0.28"/>
+      <rect x="507" y="65" width="50" height="90" fill="#a87848"/>
+      <rect x="513" y="53" width="32" height="12" fill="#a87848"/>
+      <rect x="514" y="76" width="8"  height="11" fill="#3a2010" opacity="0.30"/>
+      <rect x="528" y="76" width="8"  height="11" fill="#3a2010" opacity="0.26"/>
+
+      <!-- ── STREET LEVEL ── -->
+      <rect x="0" y="130" width="600" height="25" fill="#c4a870"/>
+      <rect x="0" y="128" width="600" height="3"  fill="#a88850"/>
+      <line x1="0"   y1="138" x2="600" y2="138" stroke="#a88850" stroke-width="0.8" opacity="0.45"/>
+      <line x1="0"   y1="146" x2="600" y2="146" stroke="#a88850" stroke-width="0.8" opacity="0.45"/>
+      <line x1="30"  y1="130" x2="30"  y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="60"  y1="130" x2="60"  y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="90"  y1="130" x2="90"  y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="120" y1="130" x2="120" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="150" y1="130" x2="150" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="180" y1="130" x2="180" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="210" y1="130" x2="210" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="240" y1="130" x2="240" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="270" y1="130" x2="270" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="300" y1="130" x2="300" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="330" y1="130" x2="330" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="360" y1="130" x2="360" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="390" y1="130" x2="390" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="420" y1="130" x2="420" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="450" y1="130" x2="450" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="480" y1="130" x2="480" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="510" y1="130" x2="510" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="540" y1="130" x2="540" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+      <line x1="570" y1="130" x2="570" y2="155" stroke="#a88850" stroke-width="0.6" opacity="0.35"/>
+
+      <!-- ── GAS LAMPS (dagslys — mørkt jern) ── -->
+      <line x1="165" y1="50" x2="165" y2="130" stroke="#3a2010" stroke-width="2.2"/>
+      <path d="M165,50 Q178,44 181,54" stroke="#3a2010" stroke-width="1.8" fill="none"/>
+      <ellipse cx="181" cy="56" rx="5" ry="3.5" fill="#4a3020" opacity="0.6"/>
+      <line x1="435" y1="55" x2="435" y2="130" stroke="#3a2010" stroke-width="2.2"/>
+      <path d="M435,55 Q422,49 419,59" stroke="#3a2010" stroke-width="1.8" fill="none"/>
+      <ellipse cx="419" cy="61" rx="5" ry="3.5" fill="#4a3020" opacity="0.6"/>
+
+      <!-- ── SILHUETTER (mørk sepia) ── -->
+      <!-- Mads Skjern -->
+      <g transform="translate(296,82)" opacity="0.82">
+        <rect x="-8" y="0" width="16" height="26" rx="2" fill="#3a2010"/>
+        <circle cx="0" cy="-10" r="10" fill="#3a2010"/>
+        <rect x="-11" y="-18" width="22" height="3" rx="1" fill="#3a2010"/>
+        <rect x="-7"  y="-34" width="14" height="17" rx="1" fill="#3a2010"/>
+        <rect x="-7"  y="-19" width="14" height="2" fill="#2a1008"/>
+        <rect x="8"   y="5"   width="4"  height="16" fill="#3a2010"/>
+        <rect x="11"  y="17"  width="14" height="9" rx="1" fill="#3a2010"/>
+        <rect x="14"  y="15"  width="6"  height="3" rx="1" fill="#2a1008"/>
+        <rect x="-14" y="3"   width="7"  height="4" rx="1" fill="#3a2010"/>
+        <rect x="-8"  y="26"  width="6"  height="20" fill="#3a2010"/>
+        <rect x="1"   y="26"  width="6"  height="20" fill="#3a2010" transform="rotate(7,4,30)"/>
+      </g>
+      <!-- Ingeborg -->
+      <g transform="translate(368,90)" opacity="0.68">
+        <path d="M-6,0 Q-9,28 -11,48 L11,48 Q9,28 6,0 Z" fill="#3a2010"/>
+        <ellipse cx="0"   cy="-2"  rx="7" ry="10" fill="#3a2010"/>
+        <circle  cx="0"   cy="-16" r="9"           fill="#3a2010"/>
+        <ellipse cx="5"   cy="-22" rx="6" ry="5"   fill="#3a2010"/>
+        <ellipse cx="0"   cy="-23" rx="11" ry="3"  fill="#3a2010"/>
+        <rect x="-14" y="2" width="9" height="4" rx="1" fill="#3a2010"/>
+        <ellipse cx="-18" cy="10" rx="6" ry="7"    fill="#3a2010"/>
+      </g>
+      <!-- Varnæs -->
+      <g transform="translate(194,90)" opacity="0.65">
+        <ellipse cx="0" cy="14" rx="11" ry="18" fill="#3a2010"/>
+        <circle  cx="0" cy="-10" r="10"          fill="#3a2010"/>
+        <ellipse cx="0" cy="-18" rx="12" ry="3"  fill="#3a2010"/>
+        <ellipse cx="0" cy="-23" rx="9"  ry="6"  fill="#3a2010"/>
+        <line x1="12" y1="8" x2="20" y2="45" stroke="#3a2010" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="12" cy="7" r="2.5" fill="#3a2010"/>
+        <rect x="-9" y="30" width="7" height="18" fill="#3a2010"/>
+        <rect x="2"  y="30" width="7" height="18" fill="#3a2010"/>
+      </g>
+
+      <!-- Vignette -->
+      <rect width="600" height="155" fill="url(#dayvign2)"/>
+    </svg>
+
     <div class="ornament">— ◆ ◆ ◆ —</div>
     <div class="start-desc">
       Kender du <strong>Matador</strong> som din egen baglomme?<br>
@@ -1425,6 +1799,24 @@
 
   <script>
     // ============================================================
+    // ── TEMA TOGGLE ──────────────────────────────────
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('korsbaek-theme', next);
+      document.getElementById('themeToggle').textContent = next === 'light' ? '🌙' : '☀️';
+    }
+    (function initTheme() {
+      const saved = localStorage.getItem('korsbaek-theme');
+      if (saved) document.documentElement.setAttribute('data-theme', saved);
+      window.addEventListener('DOMContentLoaded', function () {
+        const t = document.documentElement.getAttribute('data-theme') || 'dark';
+        const btn = document.getElementById('themeToggle');
+        if (btn) btn.textContent = t === 'light' ? '🌙' : '☀️';
+      });
+    })();
+
     // SUPABASE CONFIG
     // ============================================================
     const SB_URL = 'https://ovhxkodhxkirnpcougkx.supabase.co';
