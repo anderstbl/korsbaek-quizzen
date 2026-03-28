@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KORSBÆK QUIZ</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Oswald:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --gold: #c8a84b;
+      --gold-light: #f0d070;
+      --gold-dark: #8a6f28;
+      --bg: #0d0600;
+      --bg2: #1a0c00;
+      --bg3: #2a1500;
+      --red: #c0392b;
+      --green: #27ae60;
+      --text: #e8d5a0;
+      --text-dim: #9a8050;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Oswald', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: radial-gradient(ellipse at 50% 0%, #3a1a00 0%, transparent 60%),
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(200, 168, 75, 0.03) 40px, rgba(200, 168, 75, 0.03) 41px),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(200, 168, 75, 0.03) 40px, rgba(200, 168, 75, 0.03) 41px);
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .deco-border {
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--gold-dark), inset 0 0 40px rgba(200, 168, 75, 0.05);
+      position: relative;
+    }
+
+    /* Film grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9997;
+      opacity: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23grain)' opacity='0.055'/%3E%3C/svg%3E");
+    }
+
+    /* Art Deco corner ornaments */
+    .deco-corner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      opacity: 0.55;
+    }
+    .deco-tl { top: 10px; left: 10px; }
+    .deco-tr { top: 10px; right: 10px; }
+    .deco-bl { bottom: 10px; left: 10px; }
+    .deco-br { bottom: 10px; right: 10px; }
+
+    #screen-start {
+      text-align: center;
+      gap: 0;
+      position: relative;
+      background: radial-gradient(ellipse at 50% 20%, #2a1200 0%, #0d0600 65%);
+    }
+
+    .logo-sub {
+      font-weight: 300;
+      letter-spacing: 12px;
+      color: var(--gold);
+      font-size: 13px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .logo-main {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(62px, 13vw, 108px);
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 0.9;
+      text-shadow:
+        0 0 80px rgba(200, 168, 75, 0.5),
+        0 0 120px rgba(200, 168, 75, 0.2),
+        3px 3px 0 #4a2c00,
+        -1px -1px 0 rgba(200,168,75,0.15);
+      letter-spacing: 6px;
+    }
+
+    .logo-sub2 {
+      font-weight: 300;
+      letter-spacing: 18px;
+      color: var(--gold-dark);
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-top: 10px;
+      border-top: 1px solid rgba(138,111,40,0.35);
+      border-bottom: 1px solid rgba(138,111,40,0.35);
+      padding: 6px 0;
+    }
+
+    .ornament {
+      color: var(--gold);
+      font-size: 24px;
+      letter-spacing: 8px;
+      margin: 20px 0;
+      opacity: 0.6;
+    }
+
+    .start-desc {
+      max-width: 440px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .start-desc strong {
+      color: var(--gold);
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      padding: 16px 48px;
+      font-size: 15px;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 18px;
+      padding: 18px 60px;
+      letter-spacing: 6px;
+      box-shadow: 0 0 30px rgba(200, 168, 75, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold-dark);
+      font-size: 13px;
+      padding: 12px 36px;
+    }
+
+    @media (hover: hover) {
+    .btn-primary:hover {
+      background: var(--gold-light);
+      box-shadow: 0 0 50px rgba(200, 168, 75, 0.5);
+      transform: translateY(-2px);
+    }
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      background: rgba(200, 168, 75, 0.05);
+    }
+    }
+
+    #screen-game {
+      justify-content: flex-start;
+      padding: 20px;
+      gap: 16px;
+    }
+
+    .game-header {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+    }
+
+    .lives-display {
+      display: flex;
+      gap: 8px;
+    }
+
+    .life {
+      font-size: 22px;
+      transition: all 0.3s;
+    }
+
+    .life.lost {
+      opacity: 0.2;
+      filter: grayscale(1);
+      transform: scale(0.8);
+    }
+
+    .score-display {
+      text-align: right;
+    }
+
+    .score-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .score-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .combo-badge {
+      background: var(--gold);
+      color: var(--bg);
+      padding: 4px 10px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .combo-badge.visible {
+      opacity: 1;
+    }
+
+    .timer-container {
+      width: 100%;
+      max-width: 700px;
+      height: 4px;
+      background: var(--bg3);
+      overflow: hidden;
+    }
+
+    .timer-bar {
+      height: 100%;
+      background: var(--gold);
+      transition: width 0.1s linear;
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .timer-bar.warning {
+      background: var(--red);
+      box-shadow: 0 0 10px var(--red);
+    }
+
+    .q-counter {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .question-card {
+      width: 100%;
+      max-width: 700px;
+      background: var(--bg2);
+      padding: 32px;
+      position: relative;
+    }
+
+    .round-badge {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      margin-bottom: 20px;
+      border: 1px solid;
+    }
+
+    .round-badge.fill {
+      color: #7fb3d3;
+      border-color: #2a5f7f;
+      background: rgba(127, 179, 211, 0.05);
+    }
+
+    .round-badge.who {
+      color: #a29bd4;
+      border-color: #5a5280;
+      background: rgba(162, 155, 212, 0.05);
+    }
+
+    .round-badge.real {
+      color: #f0c040;
+      border-color: #8a6f20;
+      background: rgba(240, 192, 64, 0.08);
+    }
+
+    .round-badge.handling {
+      color: #a8d5a2;
+      border-color: #3a6b35;
+      background: rgba(168, 213, 162, 0.05);
+    }
+
+    .round-badge.tidslinje {
+      color: #f4a460;
+      border-color: #8b5a2b;
+      background: rgba(244, 164, 96, 0.07);
+    }
+
+    .round-badge.relation {
+      color: #dda0dd;
+      border-color: #7b4f7b;
+      background: rgba(221, 160, 221, 0.06);
+    }
+
+    .round-badge.lokation {
+      color: #87ceeb;
+      border-color: #2f6f8f;
+      background: rgba(135, 206, 235, 0.05);
+    }
+
+    .round-badge.billede {
+      color: #e8c4a0;
+      border-color: #8a5a2b;
+      background: rgba(232, 196, 160, 0.07);
+    }
+
+    .round-badge.skuespiller {
+      color: #c8d8a0;
+      border-color: #5a7a2b;
+      background: rgba(180, 210, 120, 0.07);
+    }
+
+    .char-illustration {
+      display: block;
+      margin: 0 auto 20px;
+      max-height: 180px;
+      width: auto;
+      filter: sepia(0.3) contrast(1.1);
+      border: 1px solid rgba(180, 140, 80, 0.25);
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    #screen-loading {
+      text-align: center;
+      gap: 24px;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .loading-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: dotPulse 1.2s ease-in-out infinite;
+    }
+
+    .loading-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes dotPulse {
+
+      0%,
+      80%,
+      100% {
+        opacity: 0.2;
+        transform: scale(0.8)
+      }
+
+      40% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .question-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(16px, 3vw, 23px);
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .blank {
+      display: inline-block;
+      border-bottom: 2px solid var(--gold);
+      min-width: 80px;
+      color: var(--gold);
+      font-style: italic;
+      text-align: center;
+    }
+
+    .character-tag {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      margin-top: 12px;
+      text-transform: uppercase;
+    }
+
+    .episode-tag {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--gold-dark);
+      margin-top: 4px;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .options-grid.grid-4 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .option-btn {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      letter-spacing: 1px;
+      font-size: 15px;
+      padding: 14px 20px;
+      background: var(--bg3);
+      color: var(--text);
+      border: 1px solid rgba(200, 168, 75, 0.15);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.1s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    @media (hover: hover) {
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--gold-dark);
+      color: var(--gold-light);
+      background: rgba(200, 168, 75, 0.08);
+    }
+    .option-btn:hover::before {
+      opacity: 1;
+    }
+    }
+
+    .option-btn.correct {
+      background: rgba(39, 174, 96, 0.2);
+      border-color: var(--green);
+      color: #2ecc71;
+    }
+
+    .option-btn.correct::before {
+      background: var(--green);
+      opacity: 1;
+    }
+
+    .option-btn.wrong {
+      background: rgba(192, 57, 43, 0.2);
+      border-color: var(--red);
+      color: #e74c3c;
+    }
+
+    .option-btn.wrong::before {
+      background: var(--red);
+      opacity: 1;
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .real-fake-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .rf-btn {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      padding: 24px 16px;
+      border: 2px solid;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.15s;
+      letter-spacing: 2px;
+    }
+
+    .rf-btn.real-btn {
+      color: var(--green);
+      border-color: rgba(39, 174, 96, 0.4);
+    }
+
+    .rf-btn.fake-btn {
+      color: var(--red);
+      border-color: rgba(192, 57, 43, 0.4);
+    }
+
+    @media (hover: hover) {
+    .rf-btn.real-btn:hover {
+      background: rgba(39, 174, 96, 0.1);
+      border-color: var(--green);
+    }
+    .rf-btn.fake-btn:hover {
+      background: rgba(192, 57, 43, 0.1);
+      border-color: var(--red);
+    }
+    }
+
+    .rf-btn.correct {
+      background: rgba(39, 174, 96, 0.2);
+      border-color: var(--green);
+    }
+
+    .rf-btn.wrong {
+      background: rgba(192, 57, 43, 0.2);
+      border-color: var(--red);
+    }
+
+    .rf-btn:disabled {
+      cursor: default;
+    }
+
+    .rf-explanation {
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      margin-top: 14px;
+      font-style: italic;
+      line-height: 1.6;
+      display: none;
+      padding-top: 12px;
+      border-top: 1px solid rgba(200, 168, 75, 0.1);
+    }
+
+    .rf-explanation.show {
+      display: block;
+    }
+
+    .feedback-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    .feedback-overlay.show {
+      opacity: 1;
+    }
+
+    .feedback-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 80px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-shadow: 0 0 40px currentColor;
+    }
+
+    .feedback-text.correct {
+      color: var(--green);
+    }
+
+    .feedback-text.wrong {
+      color: var(--red);
+    }
+
+    .screen-flash {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 90;
+      opacity: 0;
+    }
+
+    .screen-flash.flash-green {
+      background: rgba(39, 174, 96, 0.15);
+    }
+
+    .screen-flash.flash-red {
+      background: rgba(192, 57, 43, 0.25);
+    }
+
+    .speed-toast {
+      position: fixed;
+      top: 80px;
+      right: 24px;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      letter-spacing: 3px;
+      font-size: 13px;
+      padding: 8px 16px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+      z-index: 200;
+      pointer-events: none;
+    }
+
+    .speed-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .combo-explosion {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 50px;
+      font-weight: 900;
+      color: var(--gold-light);
+      text-shadow: 0 0 60px var(--gold);
+      pointer-events: none;
+      z-index: 150;
+      opacity: 0;
+      letter-spacing: 4px;
+    }
+
+    #screen-gameover {
+      text-align: center;
+      gap: 0;
+    }
+
+    .gameover-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      letter-spacing: 8px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .gameover-score {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(70px, 15vw, 120px);
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1;
+      text-shadow: 0 0 80px rgba(200, 168, 75, 0.4);
+    }
+
+    .gameover-label {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .initials-section {
+      margin: 24px 0;
+    }
+
+    .initials-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .initials-input {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      background: var(--bg2);
+      border: 1px solid var(--gold-dark);
+      color: var(--gold-light);
+      text-align: center;
+      width: 300px;
+      max-width: 90vw;
+      padding: 10px 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      outline: none;
+    }
+
+    .initials-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px rgba(200, 168, 75, 0.2);
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin: 16px 0 32px;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      color: var(--gold);
+    }
+
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    #screen-scores {
+      justify-content: flex-start;
+      padding: 40px 20px;
+      gap: 24px;
+    }
+
+    .scores-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      color: var(--gold-light);
+      letter-spacing: 4px;
+      text-align: center;
+    }
+
+    .scores-sub {
+      font-size: 11px;
+      letter-spacing: 6px;
+      color: var(--text-dim);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .scores-table {
+      width: 100%;
+      max-width: 600px;
+      border-collapse: collapse;
+    }
+
+    .scores-table th {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: var(--gold-dark);
+      text-transform: uppercase;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--gold-dark);
+      text-align: left;
+    }
+
+    .scores-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(200, 168, 75, 0.06);
+      font-size: 15px;
+    }
+
+    .scores-table tr.highlight td {
+      color: var(--gold-light);
+      background: rgba(200, 168, 75, 0.06);
+    }
+
+    .scores-table .rank {
+      color: var(--text-dim);
+      font-size: 12px;
+      width: 40px;
+    }
+
+    .scores-table .initials-cell {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .scores-table .score-cell {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+    }
+
+    .scores-table .date-cell {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    .no-scores {
+      color: var(--text-dim);
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 40px;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0)
+      }
+
+      20% {
+        transform: translateX(-12px)
+      }
+
+      40% {
+        transform: translateX(12px)
+      }
+
+      60% {
+        transform: translateX(-8px)
+      }
+
+      80% {
+        transform: translateX(8px)
+      }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0
+      }
+
+      30% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1
+      }
+
+      70% {
+        transform: translate(-50%, -80%) scale(1);
+        opacity: 1
+      }
+
+      100% {
+        transform: translate(-50%, -120%) scale(0.8);
+        opacity: 0
+      }
+    }
+
+    @keyframes fadeFlash {
+
+      0%,
+      100% {
+        opacity: 0
+      }
+
+      20% {
+        opacity: 1
+      }
+
+      80% {
+        opacity: 0.5
+      }
+    }
+
+    .shake {
+      animation: shake 0.4s ease;
+    }
+
+    @media(max-width:500px) {
+      .options-grid.grid-4 {
+        grid-template-columns: 1fr
+      }
+
+      .real-fake-grid {
+        grid-template-columns: 1fr
+      }
+
+      .question-card {
+        padding: 20px
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="feedback-overlay" id="feedbackOverlay">
+    <div class="feedback-text" id="feedbackText"></div>
+  </div>
+  <div class="screen-flash" id="screenFlash"></div>
+  <div class="speed-toast" id="speedToast">⚡ LYNHURTIGT +50</div>
+  <div class="combo-explosion" id="comboExplosion"></div>
+
+  <!-- ══ START ══ -->
+  <div class="screen active" id="screen-start">
+    <!-- Art Deco corner ornaments -->
+    <svg class="deco-corner deco-tl" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M2,2 L58,2 L58,8 L8,8 L8,58 L2,58 Z" fill="none" stroke="#8a6f28" stroke-width="1"/><path d="M2,2 L22,2 L22,4 L4,4 L4,22 L2,22 Z" fill="#8a6f28"/><circle cx="14" cy="14" r="4" fill="none" stroke="#c8a84b" stroke-width="1"/><path d="M10,14 L14,10 L18,14 L14,18 Z" fill="#c8a84b" opacity="0.6"/></svg>
+    <svg class="deco-corner deco-tr" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M58,2 L2,2 L2,8 L52,8 L52,58 L58,58 Z" fill="none" stroke="#8a6f28" stroke-width="1"/><path d="M58,2 L38,2 L38,4 L56,4 L56,22 L58,22 Z" fill="#8a6f28"/><circle cx="46" cy="14" r="4" fill="none" stroke="#c8a84b" stroke-width="1"/><path d="M42,14 L46,10 L50,14 L46,18 Z" fill="#c8a84b" opacity="0.6"/></svg>
+    <svg class="deco-corner deco-bl" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M2,58 L58,58 L58,52 L8,52 L8,2 L2,2 Z" fill="none" stroke="#8a6f28" stroke-width="1"/><path d="M2,58 L22,58 L22,56 L4,56 L4,38 L2,38 Z" fill="#8a6f28"/><circle cx="14" cy="46" r="4" fill="none" stroke="#c8a84b" stroke-width="1"/><path d="M10,46 L14,42 L18,46 L14,50 Z" fill="#c8a84b" opacity="0.6"/></svg>
+    <svg class="deco-corner deco-br" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M58,58 L2,58 L2,52 L52,52 L52,2 L58,2 Z" fill="none" stroke="#8a6f28" stroke-width="1"/><path d="M58,58 L38,58 L38,56 L56,56 L56,38 L58,38 Z" fill="#8a6f28"/><circle cx="46" cy="46" r="4" fill="none" stroke="#c8a84b" stroke-width="1"/><path d="M42,46 L46,42 L50,46 L46,50 Z" fill="#c8a84b" opacity="0.6"/></svg>
+
+    <div style="margin-bottom:16px;margin-top:8px">
+      <div class="logo-sub">Velkommen til</div>
+      <div class="logo-main">KORSBÆK</div>
+      <div class="logo-sub2">Quiz · 1929–1947</div>
+    </div>
+    <!-- Korsbæk natscene -->
+    <svg class="korsbæk-scene" viewBox="0 0 600 155" xmlns="http://www.w3.org/2000/svg"
+      style="max-width:600px;width:100%;display:block;margin:0 auto 4px;">
+      <defs>
+        <linearGradient id="nightsky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#06050f"/>
+          <stop offset="70%" stop-color="#1a0c04"/>
+          <stop offset="100%" stop-color="#2a1200"/>
+        </linearGradient>
+        <radialGradient id="lampglow1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c8a84b" stop-opacity="0.22"/>
+          <stop offset="100%" stop-color="#c8a84b" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="lampglow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c8a84b" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#c8a84b" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="moonglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#e8d8a0" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#e8d8a0" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <!-- Sky -->
+      <rect width="600" height="155" fill="url(#nightsky)"/>
+
+      <!-- Stars -->
+      <circle cx="30" cy="8" r="0.8" fill="#e8d8a0" opacity="0.7"/>
+      <circle cx="68" cy="14" r="0.6" fill="#e8d8a0" opacity="0.5"/>
+      <circle cx="105" cy="6" r="0.9" fill="#fff" opacity="0.6"/>
+      <circle cx="145" cy="11" r="0.6" fill="#e8d8a0" opacity="0.5"/>
+      <circle cx="390" cy="7" r="0.8" fill="#fff" opacity="0.6"/>
+      <circle cx="425" cy="13" r="0.6" fill="#e8d8a0" opacity="0.5"/>
+      <circle cx="460" cy="5" r="0.9" fill="#fff" opacity="0.55"/>
+      <circle cx="500" cy="10" r="0.6" fill="#e8d8a0" opacity="0.5"/>
+      <circle cx="540" cy="4" r="0.8" fill="#fff" opacity="0.65"/>
+      <circle cx="575" cy="12" r="0.6" fill="#e8d8a0" opacity="0.45"/>
+      <circle cx="560" cy="22" r="0.5" fill="#fff" opacity="0.4"/>
+      <circle cx="80" cy="22" r="0.5" fill="#fff" opacity="0.4"/>
+
+      <!-- Moon (crescent) -->
+      <circle cx="552" cy="22" r="13" fill="#e8e0b0" opacity="0.82"/>
+      <circle cx="558" cy="18" r="11" fill="#06050f"/> <!-- crescent mask -->
+      <ellipse cx="552" cy="22" r="38" ry="38" fill="url(#moonglow)" opacity="0.6"/>
+
+      <!-- ── KIRKETÅRN (center-left background) ── -->
+      <!-- Tower body -->
+      <rect x="213" y="14" width="28" height="111" fill="#120800"/>
+      <!-- Spire -->
+      <polygon points="227,2 218,14 236,14" fill="#1e1000"/>
+      <!-- Clock face -->
+      <circle cx="227" cy="36" r="9" fill="#1e1000" stroke="#8a6f28" stroke-width="0.8"/>
+      <circle cx="227" cy="36" r="7" fill="#0a0500"/>
+      <line x1="227" y1="36" x2="227" y2="30" stroke="#c8a84b" stroke-width="1.2" opacity="0.7"/>
+      <line x1="227" y1="36" x2="232" y2="36" stroke="#c8a84b" stroke-width="1" opacity="0.7"/>
+      <!-- Belfry windows -->
+      <rect x="219" y="58" width="7" height="12" rx="3" fill="#c8a84b" opacity="0.12"/>
+      <rect x="229" y="58" width="7" height="12" rx="3" fill="#c8a84b" opacity="0.08"/>
+      <!-- Tower base -->
+      <rect x="207" y="110" width="40" height="45" fill="#150a00"/>
+
+      <!-- ── BUILDINGS LEFT ── -->
+      <!-- Far-left dark house -->
+      <rect x="0" y="55" width="48" height="100" fill="#0f0600"/>
+      <rect x="8" y="42" width="28" height="13" fill="#0f0600"/>
+      <rect x="6" y="68" width="9" height="12" fill="#c8a84b" opacity="0.15"/>
+      <rect x="20" y="68" width="9" height="12" fill="#c8a84b" opacity="0.1"/>
+      <rect x="6" y="86" width="9" height="12" fill="#c8a84b" opacity="0.08"/>
+      <!-- Apoteket (pharmacy cross) -->
+      <rect x="48" y="38" width="58" height="117" fill="#160b00"/>
+      <rect x="56" y="28" width="34" height="10" fill="#160b00"/>
+      <!-- Apoteket sign / cross -->
+      <rect x="70" y="33" width="4" height="12" fill="#c8a84b" opacity="0.5"/>
+      <rect x="66" y="37" width="12" height="4" fill="#c8a84b" opacity="0.5"/>
+      <!-- Windows -->
+      <rect x="56" y="52" width="10" height="14" rx="1" fill="#c8a84b" opacity="0.25"/>
+      <rect x="72" y="52" width="10" height="14" rx="1" fill="#c8a84b" opacity="0.18"/>
+      <rect x="88" y="52" width="10" height="14" rx="1" fill="#c8a84b" opacity="0.22"/>
+      <rect x="56" y="74" width="10" height="14" rx="1" fill="#c8a84b" opacity="0.12"/>
+      <rect x="88" y="74" width="10" height="14" rx="1" fill="#c8a84b" opacity="0.16"/>
+      <!-- Korsbæk Bank -->
+      <rect x="106" y="48" width="72" height="107" fill="#1a0d00"/>
+      <rect x="112" y="36" width="56" height="12" fill="#1a0d00"/>
+      <!-- Bank pillars (very subtle) -->
+      <rect x="116" y="60" width="5" height="50" fill="#0f0800" opacity="0.5"/>
+      <rect x="131" y="60" width="5" height="50" fill="#0f0800" opacity="0.5"/>
+      <rect x="146" y="60" width="5" height="50" fill="#0f0800" opacity="0.5"/>
+      <rect x="161" y="60" width="5" height="50" fill="#0f0800" opacity="0.5"/>
+      <!-- Bank windows -->
+      <rect x="113" y="45" width="14" height="8" rx="7" fill="#c8a84b" opacity="0.3"/>
+      <rect x="132" y="45" width="14" height="8" rx="7" fill="#c8a84b" opacity="0.2"/>
+      <rect x="151" y="45" width="14" height="8" rx="7" fill="#c8a84b" opacity="0.25"/>
+      <!-- KORSBÆK BANK text -->
+      <text x="142" y="38" fill="#8a6f28" font-size="5" font-family="serif" text-anchor="middle" letter-spacing="1" opacity="0.7">KORSBÆK BANK</text>
+
+      <!-- ── SKJERNS MAGASIN (main, center-right) ── -->
+      <rect x="248" y="40" width="105" height="115" fill="#1e1100"/>
+      <rect x="255" y="28" width="84" height="12" fill="#1e1100"/>
+      <!-- Shop front / awning base -->
+      <rect x="248" y="108" width="105" height="8" fill="#251500"/>
+      <!-- Windows top floor -->
+      <rect x="258" y="44" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.28"/>
+      <rect x="280" y="44" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.35"/>
+      <rect x="302" y="44" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.22"/>
+      <rect x="324" y="44" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.3"/>
+      <!-- Windows mid floor -->
+      <rect x="258" y="72" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.2"/>
+      <rect x="280" y="72" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.25"/>
+      <rect x="302" y="72" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.15"/>
+      <rect x="324" y="72" width="15" height="20" rx="1" fill="#c8a84b" opacity="0.2"/>
+      <!-- Shop entrance -->
+      <rect x="282" y="110" width="36" height="45" fill="#0d0700"/>
+      <!-- SKJERN sign -->
+      <rect x="255" y="103" width="93" height="10" fill="#2a1800"/>
+      <text x="301" y="111" fill="#c8a84b" font-size="6.5" font-family="serif" text-anchor="middle" letter-spacing="2" opacity="0.9">SKJERN · MANUFAKTUR</text>
+
+      <!-- ── STATIONSBYGNING (right) ── -->
+      <rect x="360" y="50" width="95" height="105" fill="#160e00"/>
+      <rect x="368" y="38" width="70" height="12" fill="#160e00"/>
+      <!-- Station clock tower / gable -->
+      <polygon points="407,26 368,38 446,38" fill="#1a1000"/>
+      <!-- Windows -->
+      <rect x="370" y="56" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.2"/>
+      <rect x="388" y="56" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.28"/>
+      <rect x="406" y="56" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.18"/>
+      <rect x="424" y="56" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.22"/>
+      <rect x="442" y="56" width="10" height="16" rx="1" fill="#c8a84b" opacity="0.15"/>
+      <rect x="370" y="80" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.15"/>
+      <rect x="388" y="80" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.18"/>
+      <rect x="424" y="80" width="12" height="16" rx="1" fill="#c8a84b" opacity="0.12"/>
+      <!-- Station entrance arch -->
+      <path d="M390,116 Q407,108 424,116 L424,155 L390,155 Z" fill="#0d0800"/>
+      <!-- KORSBÆK STATION text -->
+      <text x="407" y="50" fill="#8a6f28" font-size="5" font-family="serif" text-anchor="middle" letter-spacing="1" opacity="0.6">KORSBÆK STATION</text>
+
+      <!-- ── FAR RIGHT BUILDINGS ── -->
+      <rect x="455" y="60" width="52" height="95" fill="#120900"/>
+      <rect x="462" y="48" width="32" height="12" fill="#120900"/>
+      <rect x="464" y="70" width="9" height="13" fill="#c8a84b" opacity="0.14"/>
+      <rect x="479" y="70" width="9" height="13" fill="#c8a84b" opacity="0.1"/>
+      <rect x="464" y="90" width="9" height="13" fill="#c8a84b" opacity="0.1"/>
+      <rect x="507" y="65" width="50" height="90" fill="#0e0700"/>
+      <rect x="513" y="53" width="32" height="12" fill="#0e0700"/>
+      <rect x="514" y="76" width="8" height="11" fill="#c8a84b" opacity="0.12"/>
+      <rect x="528" y="76" width="8" height="11" fill="#c8a84b" opacity="0.08"/>
+
+      <!-- ── STREET LEVEL ── -->
+      <!-- Cobblestone road -->
+      <rect x="0" y="130" width="600" height="25" fill="#200e00"/>
+      <rect x="0" y="128" width="600" height="3" fill="#2e1800"/>
+      <!-- Pavement texture lines -->
+      <line x1="0" y1="138" x2="600" y2="138" stroke="#2e1800" stroke-width="0.8"/>
+      <line x1="0" y1="146" x2="600" y2="146" stroke="#2e1800" stroke-width="0.8"/>
+      <line x1="30" y1="130" x2="30" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="60" y1="130" x2="60" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="90" y1="130" x2="90" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="120" y1="130" x2="120" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="150" y1="130" x2="150" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="180" y1="130" x2="180" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="210" y1="130" x2="210" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="240" y1="130" x2="240" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="270" y1="130" x2="270" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="300" y1="130" x2="300" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="330" y1="130" x2="330" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="360" y1="130" x2="360" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="390" y1="130" x2="390" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="420" y1="130" x2="420" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="450" y1="130" x2="450" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="480" y1="130" x2="480" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="510" y1="130" x2="510" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="540" y1="130" x2="540" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+      <line x1="570" y1="130" x2="570" y2="155" stroke="#2a1400" stroke-width="0.7"/>
+
+      <!-- ── GAS LAMPS ── -->
+      <!-- Lamp 1 (left) -->
+      <line x1="165" y1="50" x2="165" y2="130" stroke="#5a4010" stroke-width="2.2"/>
+      <path d="M165,50 Q178,44 181,54" stroke="#5a4010" stroke-width="1.8" fill="none"/>
+      <ellipse cx="181" cy="56" rx="5" ry="3.5" fill="#c8a84b" opacity="0.85"/>
+      <ellipse cx="181" cy="56" rx="22" ry="18" fill="url(#lampglow1)"/>
+      <!-- Lamp 2 (center-right) -->
+      <line x1="435" y1="55" x2="435" y2="130" stroke="#5a4010" stroke-width="2.2"/>
+      <path d="M435,55 Q422,49 419,59" stroke="#5a4010" stroke-width="1.8" fill="none"/>
+      <ellipse cx="419" cy="61" rx="5" ry="3.5" fill="#c8a84b" opacity="0.85"/>
+      <ellipse cx="419" cy="61" rx="22" ry="18" fill="url(#lampglow2)"/>
+
+      <!-- ── CHARACTER SILHOUETTES ── -->
+      <!-- Mads Skjern: top hat, suitcase, walks purposefully (center) -->
+      <g transform="translate(296,82)" opacity="0.92">
+        <!-- Body/coat -->
+        <rect x="-8" y="0" width="16" height="26" rx="2" fill="#c8a84b"/>
+        <!-- Head -->
+        <circle cx="0" cy="-10" r="10" fill="#c8a84b"/>
+        <!-- Top hat brim -->
+        <rect x="-11" y="-18" width="22" height="3" rx="1" fill="#c8a84b"/>
+        <!-- Top hat crown -->
+        <rect x="-7" y="-34" width="14" height="17" rx="1" fill="#c8a84b"/>
+        <!-- Hat band -->
+        <rect x="-7" y="-19" width="14" height="2" fill="#8a6f28"/>
+        <!-- Right arm + suitcase -->
+        <rect x="8" y="5" width="4" height="16" fill="#c8a84b"/>
+        <rect x="11" y="17" width="14" height="9" rx="1" fill="#c8a84b"/>
+        <rect x="14" y="15" width="6" height="3" rx="1" fill="#8a6f28"/>
+        <!-- Left arm: slightly raised -->
+        <rect x="-14" y="3" width="7" height="4" rx="1" fill="#c8a84b"/>
+        <!-- Legs (mid-stride) -->
+        <rect x="-8" y="26" width="6" height="20" fill="#c8a84b"/>
+        <rect x="1" y="26" width="6" height="20" fill="#c8a84b" transform="rotate(7,4,30)"/>
+      </g>
+
+      <!-- Ingeborg: long dress, slight figure, right side -->
+      <g transform="translate(368,90)" opacity="0.78">
+        <!-- Dress/body -->
+        <path d="M-6,0 Q-9,28 -11,48 L11,48 Q9,28 6,0 Z" fill="#c8a84b"/>
+        <!-- Blouse/top -->
+        <ellipse cx="0" cy="-2" rx="7" ry="10" fill="#c8a84b"/>
+        <!-- Head -->
+        <circle cx="0" cy="-16" r="9" fill="#c8a84b"/>
+        <!-- Hair/bun -->
+        <ellipse cx="5" cy="-22" rx="6" ry="5" fill="#c8a84b"/>
+        <!-- Hat with brim -->
+        <ellipse cx="0" cy="-23" rx="11" ry="3" fill="#c8a84b"/>
+        <!-- Left arm with bag -->
+        <rect x="-14" y="2" width="9" height="4" rx="1" fill="#c8a84b"/>
+        <ellipse cx="-18" cy="10" rx="6" ry="7" fill="#c8a84b"/>
+      </g>
+
+      <!-- Varnæs: heavier set, cane, left side -->
+      <g transform="translate(194,90)" opacity="0.72">
+        <!-- Body: slightly stouter -->
+        <ellipse cx="0" cy="14" rx="11" ry="18" fill="#c8a84b"/>
+        <!-- Head -->
+        <circle cx="0" cy="-10" r="10" fill="#c8a84b"/>
+        <!-- Hat (bowler) -->
+        <ellipse cx="0" cy="-18" rx="12" ry="3" fill="#c8a84b"/>
+        <ellipse cx="0" cy="-23" rx="9" ry="6" fill="#c8a84b"/>
+        <!-- Cane -->
+        <line x1="12" y1="8" x2="20" y2="45" stroke="#c8a84b" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="12" cy="7" r="2.5" fill="#c8a84b"/>
+        <!-- Legs -->
+        <rect x="-9" y="30" width="7" height="18" fill="#c8a84b"/>
+        <rect x="2" y="30" width="7" height="18" fill="#c8a84b"/>
+      </g>
+
+      <!-- Vignette overlay -->
+      <defs>
+        <radialGradient id="vign" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="transparent"/>
+          <stop offset="100%" stop-color="#06050f" stop-opacity="0.55"/>
+        </radialGradient>
+      </defs>
+      <rect width="600" height="155" fill="url(#vign)"/>
+    </svg>
+      <!-- Sky -->
+      <rect width="520" height="110" fill="#0d0600" />
+      <!-- Far buildings -->
+      <rect x="0" y="30" width="55" height="80" fill="#150900" />
+      <rect x="10" y="15" width="30" height="15" fill="#150900" />
+      <rect x="55" y="45" width="45" height="65" fill="#1a0c00" />
+      <rect x="60" y="28" width="25" height="17" fill="#1a0c00" />
+      <rect x="420" y="35" width="55" height="75" fill="#150900" />
+      <rect x="430" y="18" width="32" height="17" fill="#150900" />
+      <rect x="475" y="50" width="45" height="60" fill="#1a0c00" />
+      <rect x="480" y="32" width="28" height="18" fill="#1a0c00" />
+      <!-- Mid buildings -->
+      <rect x="100" y="42" width="70" height="68" fill="#200e00" />
+      <rect x="110" y="22" width="42" height="20" fill="#200e00" />
+      <rect x="340" y="38" width="75" height="72" fill="#200e00" />
+      <rect x="350" y="20" width="45" height="18" fill="#200e00" />
+      <!-- Windows lit gold -->
+      <rect x="16" y="40" width="8" height="10" fill="rgba(200,168,75,0.35)" />
+      <rect x="30" y="40" width="8" height="10" fill="rgba(200,168,75,0.2)" />
+      <rect x="16" y="58" width="8" height="10" fill="rgba(200,168,75,0.25)" />
+      <rect x="62" y="52" width="7" height="9" fill="rgba(200,168,75,0.3)" />
+      <rect x="74" y="52" width="7" height="9" fill="rgba(200,168,75,0.15)" />
+      <rect x="112" y="50" width="9" height="11" fill="rgba(200,168,75,0.3)" />
+      <rect x="126" y="50" width="9" height="11" fill="rgba(200,168,75,0.4)" />
+      <rect x="142" y="50" width="9" height="11" fill="rgba(200,168,75,0.2)" />
+      <rect x="112" y="68" width="9" height="11" fill="rgba(200,168,75,0.25)" />
+      <rect x="142" y="68" width="9" height="11" fill="rgba(200,168,75,0.35)" />
+      <rect x="352" y="46" width="9" height="11" fill="rgba(200,168,75,0.3)" />
+      <rect x="368" y="46" width="9" height="11" fill="rgba(200,168,75,0.4)" />
+      <rect x="384" y="46" width="9" height="11" fill="rgba(200,168,75,0.2)" />
+      <rect x="352" y="64" width="9" height="11" fill="rgba(200,168,75,0.2)" />
+      <rect x="384" y="64" width="9" height="11" fill="rgba(200,168,75,0.3)" />
+      <rect x="432" y="44" width="8" height="10" fill="rgba(200,168,75,0.35)" />
+      <rect x="446" y="44" width="8" height="10" fill="rgba(200,168,75,0.2)" />
+      <rect x="432" y="60" width="8" height="10" fill="rgba(200,168,75,0.25)" />
+      <rect x="482" y="58" width="7" height="9" fill="rgba(200,168,75,0.3)" />
+      <!-- Street lamp left -->
+      <line x1="185" y1="20" x2="185" y2="88" stroke="#8a6f28" stroke-width="2.5" />
+      <path d="M185,20 Q195,16 198,24" stroke="#8a6f28" stroke-width="2" fill="none" />
+      <ellipse cx="198" cy="26" rx="5" ry="3" fill="rgba(200,168,75,0.6)" />
+      <ellipse cx="198" cy="26" rx="10" ry="6" fill="rgba(200,168,75,0.08)" />
+      <!-- Street lamp right -->
+      <line x1="335" y1="20" x2="335" y2="88" stroke="#8a6f28" stroke-width="2.5" />
+      <path d="M335,20 Q325,16 322,24" stroke="#8a6f28" stroke-width="2" fill="none" />
+      <ellipse cx="322" cy="26" rx="5" ry="3" fill="rgba(200,168,75,0.6)" />
+      <ellipse cx="322" cy="26" rx="10" ry="6" fill="rgba(200,168,75,0.08)" />
+      <!-- Cobblestone road -->
+      <rect x="0" y="78" width="520" height="32" fill="#2a1800" />
+      <!-- Cobble lines -->
+      <line x1="0" y1="88" x2="520" y2="88" stroke="rgba(200,168,75,0.06)" stroke-width="1" />
+      <line x1="0" y1="100" x2="520" y2="100" stroke="rgba(200,168,75,0.06)" stroke-width="1" />
+      <line x1="26" y1="78" x2="26" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="52" y1="78" x2="52" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="78" y1="78" x2="78" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="104" y1="78" x2="104" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="130" y1="78" x2="130" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="156" y1="78" x2="156" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="182" y1="78" x2="182" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="208" y1="78" x2="208" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="234" y1="78" x2="234" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="260" y1="78" x2="260" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="286" y1="78" x2="286" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="312" y1="78" x2="312" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="338" y1="78" x2="338" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="364" y1="78" x2="364" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="390" y1="78" x2="390" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="416" y1="78" x2="416" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="442" y1="78" x2="442" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="468" y1="78" x2="468" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <line x1="494" y1="78" x2="494" y2="110" stroke="rgba(200,168,75,0.05)" stroke-width="1" />
+      <!-- Kerb line -->
+      <rect x="0" y="76" width="520" height="3" fill="#3a2000" />
+      <!-- Silhouette: Mads with suitcase (left) -->
+      <g transform="translate(215,38)">
+        <!-- Body -->
+        <rect x="-7" y="0" width="14" height="22" fill="#c8a84b" opacity="0.9" />
+        <!-- Head -->
+        <circle cx="0" cy="-8" r="9" fill="#c8a84b" opacity="0.9" />
+        <!-- Hat -->
+        <rect x="-9" y="-17" width="18" height="4" fill="#c8a84b" opacity="0.9" />
+        <rect x="-6" y="-26" width="12" height="10" fill="#c8a84b" opacity="0.9" />
+        <!-- Arm + suitcase -->
+        <rect x="7" y="6" width="4" height="14" fill="#c8a84b" opacity="0.9" />
+        <rect x="10" y="15" width="12" height="9" fill="#c8a84b" opacity="0.9" />
+        <rect x="13" y="13" width="6" height="3" fill="#8a6f28" opacity="0.9" />
+        <!-- Legs -->
+        <rect x="-6" y="22" width="5" height="18" fill="#c8a84b" opacity="0.9" />
+        <rect x="1" y="22" width="5" height="18" fill="#c8a84b" opacity="0.9" />
+      </g>
+      <!-- Silhouette: Fru Møghe in wheelchair (right) -->
+      <g transform="translate(305,35)">
+        <!-- Big wheel -->
+        <circle cx="-8" cy="35" r="18" stroke="#c8a84b" stroke-width="2" fill="none" opacity="0.8" />
+        <!-- Small wheel -->
+        <circle cx="17" cy="38" r="9" stroke="#c8a84b" stroke-width="2" fill="none" opacity="0.8" />
+        <!-- Frame -->
+        <line x1="-8" y1="17" x2="8" y2="17" stroke="#c8a84b" stroke-width="2" opacity="0.8" />
+        <line x1="-8" y1="17" x2="-8" y2="35" stroke="#c8a84b" stroke-width="2" opacity="0.8" />
+        <line x1="8" y1="17" x2="17" y2="35" stroke="#c8a84b" stroke-width="2" opacity="0.8" />
+        <!-- Back rest -->
+        <line x1="-8" y1="17" x2="-8" y2="-8" stroke="#c8a84b" stroke-width="2" opacity="0.8" />
+        <!-- Body sitting -->
+        <ellipse cx="3" cy="5" rx="13" ry="15" fill="#c8a84b" opacity="0.9" />
+        <!-- Head -->
+        <circle cx="5" cy="-12" r="10" fill="#c8a84b" opacity="0.9" />
+        <!-- Hat/hair bun -->
+        <circle cx="10" cy="-19" r="6" fill="#c8a84b" opacity="0.9" />
+        <!-- Misse pushing -->
+        <rect x="22" y="-15" width="11" height="26" fill="#c8a84b" opacity="0.7" />
+        <circle cx="27" cy="-23" r="8" fill="#c8a84b" opacity="0.7" />
+        <!-- Misse handle arms -->
+        <line x1="22" y1="5" x2="-8" y2="5" stroke="#c8a84b" stroke-width="2" opacity="0.7" />
+      </g>
+      <!-- Gold shimmer gradient overlay on scene -->
+      <rect width="520" height="110" fill="url(#shimmer)" opacity="0.15" />
+      <defs>
+        <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#c8a84b" stop-opacity="0" />
+          <stop offset="50%" stop-color="#c8a84b" stop-opacity="0.4" />
+          <stop offset="100%" stop-color="#c8a84b" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="ornament">— ◆ ◆ ◆ —</div>
+    <div class="start-desc">
+      Kender du <strong>Matador</strong> som din egen baglomme?<br>
+      Udfyld de manglende replikker, gæt hvem der sagde hvad,<br>
+      og afslør de opdigtede sætninger.<br><br>
+      <strong>3 liv · Combo-bonus · Hastighedsbonus · Top 100</strong>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="startGame()">SPIL NU</button>
+      <button class="btn btn-secondary" onclick="showScores()">TOP 100</button>
+    </div>
+    <div id="homeTop10" style="width:100%;max-width:480px;margin-top:28px;">
+      <div
+        style="font-family:'Playfair Display',serif;color:#c8a84b;font-size:13px;letter-spacing:3px;text-align:center;margin-bottom:10px;opacity:0.7;">
+        — TOP 10 —</div>
+      <div id="homeTop10Content" style="color:#9a8050;font-size:13px;text-align:center;letter-spacing:1px;">Henter
+        scores…</div>
+    </div>
+  </div>
+
+  <!-- ══ LOADING ══ -->
+  <div class="screen" id="screen-loading">
+    <div class="logo-main" style="font-size:48px">KORSBÆK</div>
+    <div class="ornament">— ◆ —</div>
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
+    <div class="logo-sub" style="margin-top:12px">Henter spørgsmål…</div>
+  </div>
+
+  <!-- ══ GAME ══ -->
+  <div class="screen" id="screen-game">
+    <div class="game-header">
+      <div>
+        <div class="lives-display" id="livesDisplay"></div>
+        <div class="combo-badge" id="comboBadge">× COMBO</div>
+      </div>
+      <div class="q-counter" id="qCounter">SPØRGSMÅL 1 / 15</div>
+      <div class="score-display">
+        <div class="score-label">Score</div>
+        <div class="score-value" id="scoreValue">0</div>
+      </div>
+    </div>
+    <div class="timer-container">
+      <div class="timer-bar" id="timerBar"></div>
+    </div>
+    <div class="question-card deco-border" id="questionCard">
+      <div class="round-badge" id="roundBadge"></div>
+      <div class="question-text" id="questionText"></div>
+      <div id="answersContainer"></div>
+      <div class="rf-explanation" id="rfExplanation"></div>
+    </div>
+  </div>
+
+  <!-- ══ GAMEOVER ══ -->
+  <div class="screen" id="screen-gameover">
+    <div class="gameover-title">Runden er slut</div>
+    <div class="gameover-score" id="gameoverScore">0</div>
+    <div class="gameover-label">point</div>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-value" id="statCorrect">0</div>
+        <div class="stat-label">Rigtige</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="statCombo">0</div>
+        <div class="stat-label">Max combo</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="statSpeed">0</div>
+        <div class="stat-label">Lynhurtige</div>
+      </div>
+    </div>
+    <div class="initials-section">
+      <div class="initials-label">Dit navn til highscore</div>
+      <input class="initials-input" id="initialsInput" maxlength="40" placeholder="Dit navn" />
+    </div>
+    <div class="ornament" style="margin:16px 0">— ◆ —</div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="saveAndContinue()">GEM SCORE</button>
+      <button class="btn btn-secondary" onclick="shareScore()">DEL</button>
+      <button class="btn btn-secondary" onclick="showScores()">TOP 100</button>
+      <button class="btn btn-secondary" onclick="startGame()">PRØV IGEN</button>
+    </div>
+  </div>
+
+  <!-- ══ SCORES ══ -->
+  <div class="screen" id="screen-scores">
+    <div class="scores-title">TOP 100</div>
+    <div class="scores-sub">Korsbæks bedste kendere</div>
+    <div id="scoresContent" style="width:100%;max-width:600px;"></div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="startGame()">SPIL NU</button>
+      <button class="btn btn-secondary" onclick="showScreen('screen-start')">FORSIDE</button>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // SUPABASE CONFIG
+    // ============================================================
+    const SB_URL = 'https://ovhxkodhxkirnpcougkx.supabase.co';
+    const SB_KEY = 'sb_publishable_hW_ry0Xy-KobJMCPHRWrMA_i5wCAqg-';
+
+    const BADGE_INFO = {
+      citat_fill: { text: '✦ UDFYLD REPLIKEN', cls: 'fill' },
+      citat_who: { text: '✦ HVEM SAGDE DET?', cls: 'who' },
+      citat_real: { text: '✦ ÆGTE ELLER OPFUNDET?', cls: 'real' },
+      handling: { text: '✦ HANDLINGEN', cls: 'handling' },
+      tidslinje: { text: '✦ TIDSLINJE', cls: 'tidslinje' },
+      relation: { text: '✦ RELATIONER', cls: 'relation' },
+      lokation: { text: '✦ LOKATION', cls: 'lokation' },
+      billede: { text: '✦ HVEM ER DETTE?', cls: 'billede' },
+      skuespiller: { text: '✦ SKUESPILLERNE', cls: 'skuespiller' },
+    };
+
+    // In-memory question cache
+    let QCACHE = null;
+
+    async function sbFetch(path) {
+      const r = await fetch(SB_URL + path, {
+        headers: { apikey: SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }
+      });
+      if (!r.ok) throw new Error('Supabase fetch fejl: ' + r.status);
+      return r.json();
+    }
+
+    async function loadQuestions() {
+      if (QCACHE) return QCACHE;
+      const rows = await sbFetch('/rest/v1/questions?select=*&active=eq.true&order=id.asc&limit=500');
+      // Normalize to game-internal short format
+      QCACHE = rows.map(r => ({
+        t: r.type,
+        cat: r.category,
+        q: r.question,
+        a: r.answer,
+        o: r.options,           // already parsed JSON array (or null)
+        who: r.who,
+        ep: r.episode,
+        etitel: r.ep_title,
+        expl: r.explanation,
+        img: r.image_url || null, // URL til karakterillustration (billede-kategori)
+      }));
+      return QCACHE;
+    }
+
+    // ============================================================
+    // LEGACY LOCAL QUESTION BANK – bruges ikke mere, beholdt som
+    // fallback hvis Supabase er utilgængeligt (åbnes ikke i drift)
+    // ============================================================
+    const Q = [
+
+      // ──────────────────────────────────────────────────────────
+      // UDFYLD REPLIKEN
+      // ──────────────────────────────────────────────────────────
+
+      // EP 1
+      {
+        t: 'fill',
+        q: 'Røde interesserer sig sgu ikke for kvinder kun for ___',
+        a: 'polletæk', o: ['polletæk', 'bridgespil', 'sport', 'fodbold'],
+        who: 'GRISEHANDLEREN', ep: 1, etitel: 'Den rejsende'
+      },
+
+      {
+        t: 'fill',
+        q: 'Til pæne kjoler er det ikke ___ i denne sæson',
+        a: 'vinrødt', o: ['vinrødt', 'sort', 'blåt', 'grønt'],
+        who: 'SCHWANN', ep: 1, etitel: 'Den rejsende'
+      },
+
+      {
+        t: 'fill',
+        q: 'Jeg forbyder nogen at røre ham, før han er blevet ___',
+        a: 'vasket', o: ['vasket', 'undersøgt', 'klædt om', 'badet'],
+        who: 'MAUDE', ep: 1, etitel: 'Den rejsende'
+      },
+
+      {
+        t: 'fill',
+        q: 'Da De var rejst på ferie – fandt fruen ud af, at alle nøglehullerne de skulle renses med sprit og ___',
+        a: 'vatpinde', o: ['vatpinde', 'en klud', 'børster', 'staniol'],
+        who: 'AGNES', ep: 1, etitel: 'Den rejsende'
+      },
+
+      // EP 2
+      {
+        t: 'fill',
+        q: 'Agnes – den fejreste blandt Valhals ___',
+        a: 'Valkyrier', o: ['Valkyrier', 'gudinder', 'damer', 'piger'],
+        who: 'BOLDT', ep: 2, etitel: 'Genboen'
+      },
+
+      {
+        t: 'fill',
+        q: 'Nej, det er osse mit navn. Andersen – ___',
+        a: 'Skjern', o: ['Skjern', 'Jensen', 'Frederiksen', 'Hansen'],
+        who: 'MADS', ep: 2, etitel: 'Genboen'
+      },
+
+      {
+        t: 'fill',
+        q: 'Han lever nok af sine penge – den der tæller i enører, sanker i ___',
+        a: 'lade', o: ['lade', 'banken', 'stilhed', 'pengepungen'],
+        who: 'BOLDT', ep: 2, etitel: 'Genboen'
+      },
+
+      {
+        t: 'fill',
+        q: 'Mens De fornøjede damerne – har min Kvik ___ Deres lille firbenede veninde',
+        a: 'lyksaliggjort', o: ['lyksaliggjort', 'glædet', 'bidt', 'fornærmet'],
+        who: 'GRISEHANDLEREN', ep: 2, etitel: 'Genboen'
+      },
+
+      // EP 3
+      {
+        t: 'fill',
+        q: 'Små eller store – jeg er ikke for ringe til at ___',
+        a: 'hilse', o: ['hilse', 'bukke', 'bøje mig', 'vige'],
+        who: 'MADS', ep: 3, etitel: 'Skiftedag'
+      },
+
+      {
+        t: 'fill',
+        q: 'Vores kunder holder ikke ___',
+        a: 'skiftedag', o: ['skiftedag', 'åbent søndag', 'sommerferie', 'lukket'],
+        who: 'SCHWANN', ep: 3, etitel: 'Skiftedag'
+      },
+
+      // EP 4
+      {
+        t: 'fill',
+        q: 'Selvom jeg er den ældste af os to – har jeg aldrig prøvet at rejse på andet end på ___ klasse',
+        a: 'tredje', o: ['tredje', 'anden', 'første', 'fjerde'],
+        who: 'MADS', ep: 4, etitel: 'Skyggetanten'
+      },
+
+      {
+        t: 'fill',
+        q: 'Der er langt – fra Fredericia til ___',
+        a: 'Korsbæk', o: ['Korsbæk', 'Herning', 'Viborg', 'Aarhus'],
+        who: 'KRISTEN', ep: 4, etitel: 'Skyggetanten'
+      },
+
+      {
+        t: 'fill',
+        q: 'Færdigsyet tøj, det er ikke noget for virkelige ___',
+        a: 'damer', o: ['damer', 'kunder', 'kvinder', 'mennesker'],
+        who: 'SCHWANN', ep: 4, etitel: 'Skyggetanten'
+      },
+
+      // EP 5
+      {
+        t: 'fill',
+        q: 'Uden hende var jeg måske ikke så meget ___',
+        a: 'værd', o: ['værd', 'glad', 'dygtig', 'heldig'],
+        who: 'MADS', ep: 5, etitel: 'Den enes død'
+      },
+
+      {
+        t: 'fill',
+        q: 'Banken tør ikke mere, Maude – jeg er ked af det, min ___',
+        a: 'skat', o: ['skat', 'ven', 'elskede', 'kone'],
+        who: 'VARNÆS', ep: 5, etitel: 'Den enes død'
+      },
+
+      // EP 6
+      {
+        t: 'fill',
+        q: 'Ja, her ser De familiens ___ aktionær',
+        a: 'femte', o: ['femte', 'sjette', 'fjerde', 'tredje'],
+        who: 'MADS', ep: 6, etitel: 'Opmarch'
+      },
+
+      {
+        t: 'fill',
+        q: 'Ja mig er der sgu ingen, der kalder op ___',
+        a: 'efter', o: ['efter', 'til', 'på', 'om'],
+        who: 'GRISEHANDLEREN', ep: 6, etitel: 'Opmarch'
+      },
+
+      {
+        t: 'fill',
+        q: 'Derfor skal de ikke komme ind i en ordentlig forretning med folk i ___',
+        a: 'arbejdstøj', o: ['arbejdstøj', 'mudderstøvler', 'det tøj', 'sådant tøj'],
+        who: 'SCHWANN', ep: 6, etitel: 'Opmarch'
+      },
+
+      // EP 7
+      {
+        t: 'fill',
+        q: 'Tante Møghe bliver jo kun 100 år den ___ gang',
+        a: 'ene', o: ['ene', 'første', 'samme', 'sidste'],
+        who: 'VARNÆS', ep: 7, etitel: 'Fødselsdagen'
+      },
+
+      {
+        t: 'fill',
+        q: 'Et flygel ___ du anskaffet dig, mindre kunne åbenbart ikke gøre det',
+        a: 'har', o: ['har', 'fik', 'lod', 'måtte'],
+        who: 'MADS', ep: 7, etitel: 'Fødselsdagen'
+      },
+
+      // EP 8
+      {
+        t: 'fill',
+        q: 'Jeg skal ikke ___ nogen steder',
+        a: 'ferniseres', o: ['ferniseres', 'udstilles', 'inviteres', 'fremvises'],
+        who: 'KATRINE', ep: 8, etitel: 'Komme fremmede'
+      },
+
+      {
+        t: 'fill',
+        q: 'I mit hjem havde vi et billede af Ruth, der sanker aks – og et af Jesus, der vandrer på ___',
+        a: 'søen', o: ['søen', 'vandet', 'havet', 'bølgerne'],
+        who: 'RØDE', ep: 8, etitel: 'Komme fremmede'
+      },
+
+      {
+        t: 'fill',
+        q: 'Gammelt venskab er farligt for en ___',
+        a: 'bank', o: ['bank', 'forretning', 'mand', 'by'],
+        who: 'SKJOLD HANSEN', ep: 8, etitel: 'Komme fremmede'
+      },
+
+      // EP 9
+      {
+        t: 'fill',
+        q: 'Nu står du ved dit livs valg – mig – eller ___ og slip',
+        a: 'træk', o: ['træk', 'kort', 'tov', 'snor'],
+        who: 'RØDE', ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      {
+        t: 'fill',
+        q: 'Dine frikadeller er forhåbentlig ___',
+        a: 'bedre', o: ['bedre', 'gode', 'store', 'færdige'],
+        who: 'KATRINE', ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      // EP 10
+      {
+        t: 'fill',
+        q: 'Ja, I er jo mænd – så koster respekten heller ikke ___',
+        a: 'noget', o: ['noget', 'meget', 'penge', 'tid'],
+        who: 'INGEBORG', ep: 10, etitel: 'I disse tider'
+      },
+
+      {
+        t: 'fill',
+        q: 'Det er i hvert fald et held, hun ikke har giftet sig med ___',
+        a: 'Kristen', o: ['Kristen', 'Jørgen', 'Holmdal', 'Varnæs'],
+        who: 'MADS', ep: 10, etitel: 'I disse tider'
+      },
+
+      // EP 11
+      {
+        t: 'fill',
+        q: 'Jeg er døbt, konfirmeret og betaler kirkeskat – og dermed ___',
+        a: 'basta', o: ['basta', 'punktum', 'færdig', 'slut'],
+        who: 'SKJOLD HANSEN', ep: 11, etitel: 'I klemme'
+      },
+
+      {
+        t: 'fill',
+        q: 'I ka da ikke ordne ___ i de omgivelser',
+        a: 'verdensrevolutionen', o: ['verdensrevolutionen', 'politikken', 'klassekampen', 'krigen'],
+        who: 'GRISEHANDLEREN', ep: 11, etitel: 'I klemme'
+      },
+
+      {
+        t: 'fill',
+        q: 'Aldrig! Kun når jeg bliver ___!',
+        a: 'opdaget', o: ['opdaget', 'stoppet', 'afsløret', 'taget'],
+        who: 'DR. HANSEN', ep: 11, etitel: 'I klemme'
+      },
+
+      // EP 12
+      {
+        t: 'fill',
+        q: 'Hvorfor faen ku du ikke osse bare nøjes med at være en ganske almindlig ___!?',
+        a: 'socialdemokrat', o: ['socialdemokrat', 'arbejder', 'borger', 'dansker'],
+        who: 'GRISEHANDLEREN', ep: 12, etitel: 'I lyst og nød'
+      },
+
+      {
+        t: 'fill',
+        q: 'Det er ikke fluer, han skal slå ihjel – det er ___',
+        a: 'svin', o: ['svin', 'fjender', 'fascister', 'tyskere'],
+        who: 'KATRINE', ep: 12, etitel: 'I lyst og nød'
+      },
+
+      {
+        t: 'fill',
+        q: 'Og så kan du køre i rullestol op og ned ad gaden – lissom ___',
+        a: 'fru Møghe', o: ['fru Møghe', 'en gammel mand', 'de andre', 'en invalid'],
+        who: 'AGNES', ep: 12, etitel: 'I lyst og nød'
+      },
+
+      // ──────────────────────────────────────────────────────────
+      // HVEM SAGDE DET?
+      // ──────────────────────────────────────────────────────────
+
+      {
+        t: 'who',
+        q: '"Du er en KEDELIG, GAMMEL, OND mand"',
+        a: 'VICKI', o: ['VICKI', 'INGEBORG', 'MAUDE', 'AGNES'],
+        ep: 4, etitel: 'Skyggetanten'
+      },
+
+      {
+        t: 'who',
+        q: '"Den fejreste blandt Valhals Valkyrier"',
+        a: 'BOLDT', o: ['BOLDT', 'GRISEHANDLEREN', 'VARNÆS', 'JØRGEN'],
+        ep: 2, etitel: 'Genboen'
+      },
+
+      {
+        t: 'who',
+        q: '"Det var dog satans så fræk hun er blevet – hun ta\'r mere og mere efter sin mor"',
+        a: 'GRISEHANDLEREN', o: ['GRISEHANDLEREN', 'BOLDT', 'HOLMDAL', 'RØDE'],
+        ep: 6, etitel: 'Opmarch'
+      },
+
+      {
+        t: 'who',
+        q: '"Jeg vil hellere arbejde gratis for hende – end hos dem, derovre. De slog Albert ihjel!"',
+        a: 'FRK. JØRGENSEN', o: ['FRK. JØRGENSEN', 'VICKI', 'MAUDE', 'VIOLET'],
+        ep: 6, etitel: 'Opmarch'
+      },
+
+      {
+        t: 'who',
+        q: '"Herbert er mit vidne – det smukkeste barn Korsbæk har set"',
+        a: 'RØDE', o: ['RØDE', 'GRISEHANDLEREN', 'BOLDT', 'FEDE'],
+        ep: 11, etitel: 'I klemme'
+      },
+
+      {
+        t: 'who',
+        q: '"Nåhhh – hr. og fru Skjern er da flinke nok – min fru har i hvert fald ingen bacilleanfald"',
+        a: 'GUDRUN', o: ['GUDRUN', 'LAURA', 'AGNES', 'KATRINE'],
+        ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      {
+        t: 'who',
+        q: '"Det grimme skrummel"',
+        a: 'FRU MØGHE', o: ['FRU MØGHE', 'MISSE', 'VARNÆS', 'STEIN'],
+        ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      {
+        t: 'who',
+        q: '"Og hver engang at døren gik, jeg tro\'de det var dig..."',
+        a: 'FRK. MORTENSEN', o: ['FRK. MORTENSEN', 'ULLA', 'FRK. JØRGENSEN', 'AGNES'],
+        ep: 8, etitel: 'Komme fremmede'
+      },
+
+      {
+        t: 'who',
+        q: '"Sans comparaison – min skat"',
+        a: 'VARNÆS', o: ['VARNÆS', 'JØRGEN', 'HOLMDAL', 'KONSULEN'],
+        ep: 10, etitel: 'I disse tider'
+      },
+
+      {
+        t: 'who',
+        q: '"Nja – så er jeg bange for at Albert krakker!"',
+        a: 'VARNÆS', o: ['VARNÆS', 'GRISEHANDLEREN', 'HOLMDAL', 'BOLDT'],
+        ep: 3, etitel: 'Skiftedag'
+      },
+
+      {
+        t: 'who',
+        q: '"Ja, min mand regner med, det bliver en dreng"',
+        a: 'INGEBORG', o: ['INGEBORG', 'AGNES', 'MAUDE', 'KATRINE'],
+        ep: 6, etitel: 'Opmarch'
+      },
+
+      {
+        t: 'who',
+        q: '"Fordi det er med en herre"',
+        a: 'INGEBORG', o: ['INGEBORG', 'MAUDE', 'LAURA', 'VICKI'],
+        ep: 5, etitel: 'Den enes død'
+      },
+
+      {
+        t: 'who',
+        q: '"Det er pænt af konsulinden, at hun vil frelse min sjæl"',
+        a: 'ELISABETH', o: ['ELISABETH', 'VICKI', 'ULLA', 'AGNES'],
+        ep: 11, etitel: 'I klemme'
+      },
+
+      {
+        t: 'who',
+        q: '"Jeg begriber ikke, du kan – jeg kan ikke engang holde ud at høre mig selv spille"',
+        a: 'MAUDE', o: ['MAUDE', 'VARNÆS', 'INGEBORG', 'VICKI'],
+        ep: 12, etitel: 'I lyst og nød'
+      },
+
+      {
+        t: 'who',
+        q: '"Man skulle tro, jeg forlod dig for en anden kvinde – sådan som du tager på vej"',
+        a: 'RØDE', o: ['RØDE', 'JØRGEN', 'KRISTEN', 'HOLMDAL'],
+        ep: 12, etitel: 'I lyst og nød'
+      },
+
+      {
+        t: 'who',
+        q: '"Hvis de endda sad – de har dem sgu i strømpeskafterne"',
+        a: 'GRISEHANDLEREN', o: ['GRISEHANDLEREN', 'BOLDT', 'RØDE', 'VARNÆS'],
+        ep: 6, etitel: 'Opmarch'
+      },
+
+      {
+        t: 'who',
+        q: '"Giftes – allerede – hvor gammel er De da, Agnes?"',
+        a: 'MAUDE', o: ['MAUDE', 'INGEBORG', 'LAURA', 'FRU MØGHE'],
+        ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      {
+        t: 'who',
+        q: '"Jeg er 24"',
+        a: 'AGNES', o: ['AGNES', 'ULLA', 'REGITZE', 'GITTE'],
+        ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      {
+        t: 'who',
+        q: '"Det er den heller ikke, lille mor"',
+        a: 'MISSE', o: ['MISSE', 'KATRINE', 'INGEBORG', 'AGNES'],
+        ep: 9, etitel: 'Hen til kommoden'
+      },
+
+      {
+        t: 'who',
+        q: '"Hellere for lidt end for meget. I Arnesens tid måtte vi klatre over møblerne"',
+        a: 'ELISABETH', o: ['ELISABETH', 'VICKI', 'MAUDE', 'INGEBORG'],
+        ep: 7, etitel: 'Fødselsdagen'
+      },
+
+      // ──────────────────────────────────────────────────────────
+      // ÆGTE ELLER OPFUNDET?
+      // ──────────────────────────────────────────────────────────
+
+      {
+        t: 'real', real: true,
+        q: '"Røde interesserer sig sgu ikke for kvinder kun for polletæk"',
+        expl: 'Grisehandlerens replik fra ep.1 – han sidder i jernbanerestauranten og iagttager de to unge mænd.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Du er en KEDELIG, GAMMEL, OND mand"',
+        expl: 'Vickis rasende udbrud til Arnesen i ep.4, da han knækker hendes nye rejsegrammofon.'
+      },
+
+      {
+        t: 'real', real: false,
+        q: '"I Korsbæk kender alle hinanden – for godt, sommetider"',
+        expl: 'Opfundet – lyder Matador-agtig, men optræder ikke i de originale manuskripter.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Agnes – den fejreste blandt Valhals Valkyrier"',
+        expl: 'Boldts flirtende hilsen til Agnes i jernbanerestauranten, ep.2 "Genboen".'
+      },
+
+      {
+        t: 'real', real: false,
+        q: '"En god handelsmand sælger ikke varer – han sælger drømme"',
+        expl: 'Opfundet i Mads Skjerns stil – men han siger aldrig noget så svulstig i manuskripterne.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Gammelt venskab er farligt for en bank"',
+        expl: 'Skjold Hansens kolde bemærkning til Stein i ep.8, mens han rydder ud i Korsbæk Banks gamle kunder.'
+      },
+
+      {
+        t: 'real', real: false,
+        q: '"Banken er som en kirke – man kommer der i nød, men sjældent i glæde"',
+        expl: 'Opfundet – for vittigt til Varnæs\' formelle stil og optræder ikke i nogen episode.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Jeg er døbt, konfirmeret og betaler kirkeskat – og dermed basta"',
+        expl: 'Skjold Hansens bramfri svar i ep.11, da hans kone presser ham til at deltage i Oxford-bevægelsen.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Hvorfor faen ku du ikke osse bare nøjes med at være en ganske almindlig socialdemokrat!?"',
+        expl: 'Grisehandlerens bramfrie udbrud til Røde i ep.12, da han får nys om Rødes planer om at drage til Spanien.'
+      },
+
+      {
+        t: 'real', real: false,
+        q: '"Man skal ikke dømme en mand på hans konto, men på hans karakter"',
+        expl: 'Opfundet – lyder fornuftigt nok, men optræder ikke i nogen af de 12 manuskripter.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Dine frikadeller er forhåbentlig bedre"',
+        expl: 'Katrines tørre kommentar til Agnes i ep.9 om Rød\'es politiske diskussioner – bedre end hans teorier, formentlig.'
+      },
+
+      {
+        t: 'real', real: false,
+        q: '"Agnes, du er den eneste kvinde, jeg nogensinde har elsket"',
+        expl: 'Opfundet – Røde er ikke manden for store romantiske erklæringer i manuskripterne.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Han lever nok af sine penge – den der tæller i enører, sanker i lade"',
+        expl: 'Boldts skarpe karakteristik af den nye genbo Mads Andersen-Skjern over for Agnes, ep.2.'
+      },
+
+      {
+        t: 'real', real: false,
+        q: '"I Korsbæk er der ikke plads til de store følelser"',
+        expl: 'Opfundet – ingen i serien siger noget så selvbevidst refleksivt om Korsbæk.'
+      },
+
+      {
+        t: 'real', real: true,
+        q: '"Det er ikke fluer, han skal slå ihjel – det er svin"',
+        expl: 'Katrines karakteristik af Herbert i ep.12 – grisehandlerens kone er ikke bleg for at kalde en spade en spade.'
+      },
+    ];
+
+    // ════════════════════════════════════════════
+    // STATE
+    // ════════════════════════════════════════════
+    let S = {};
+    function initState() { S = { score: 0, lives: 3, combo: 0, maxCombo: 0, correct: 0, speed: 0, qi: 0, qs: [], timer: null, tStart: 0, tDur: 0, done: false, lastScore: 0 }; }
+
+    // ════════════════════════════════════════════
+    // AUDIO
+    // ════════════════════════════════════════════
+    let AC = null;
+    function ac() { if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)(); return AC; }
+    function tone(f, t, d, v, dl = 0) { try { const c = ac(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.type = t; o.frequency.setValueAtTime(f, c.currentTime + dl); g.gain.setValueAtTime(v, c.currentTime + dl); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dl + d); o.start(c.currentTime + dl); o.stop(c.currentTime + dl + d); } catch (e) { } }
+    function sndOk() { tone(440, 'triangle', .15, .3); tone(554, 'triangle', .15, .3, .08); tone(659, 'triangle', .25, .3, .16); }
+    function sndNo() { tone(300, 'sawtooth', .1, .3); tone(220, 'sawtooth', .25, .3, .1); }
+    function sndCombo() { [523, 659, 784, 1047].forEach((f, i) => tone(f, 'triangle', .2, .25, i * .07)); }
+    function sndTick() { tone(880, 'sine', .05, .1); }
+    function sndFan() { [523, 659, 784, 523, 659, 784, 1047].forEach((f, i) => tone(f, 'triangle', .3, .2, i * .12)); }
+
+    // ════════════════════════════════════════════
+    // SCREENS
+    // ════════════════════════════════════════════
+    function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+    // ════════════════════════════════════════════
+    // GAME
+    // ════════════════════════════════════════════
+    async function startGame() {
+      showScreen('screen-loading');
+      initState();
+      let all;
+      try {
+        all = await loadQuestions();
+      } catch (e) {
+        // Supabase fejlede – vis advarsel og brug lokalt fallback
+        console.error('Supabase fejl:', e);
+        const warn = document.createElement('div');
+        warn.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);background:#8b0000;color:#fff;padding:10px 20px;border-radius:8px;z-index:9999;font-size:13px;text-align:center;';
+        warn.textContent = '⚠️ Ingen forbindelse til databasen – kører med demo-spørgsmål. Åbn filen via en webserver eller Vercel for fuld quiz.';
+        document.body.appendChild(warn);
+        setTimeout(() => warn.remove(), 8000);
+        all = Q.map(r => ({
+          t: r.t, cat: r.t === 'fill' ? 'citat_fill' : r.t === 'who' ? 'citat_who' : r.t === 'real' ? 'citat_real' : 'handling',
+          q: r.q, a: r.real !== undefined ? (r.real ? 'ÆGTE' : 'LØGN') : r.a, o: r.o || null, who: r.who, ep: r.ep, etitel: r.etitel, expl: r.expl
+        }));
+      }
+
+      const fills = shuf(all.filter(q => q.cat === 'citat_fill'));
+      const whos = shuf(all.filter(q => q.cat === 'citat_who'));
+      const reals = shuf(all.filter(q => q.cat === 'citat_real'));
+      const facts = shuf(all.filter(q => ['handling', 'tidslinje', 'relation', 'lokation'].includes(q.cat)));
+      const billeder = shuf(all.filter(q => q.cat === 'billede'));
+      const skuesp = shuf(all.filter(q => q.cat === 'skuespiller'));
+
+      // Build 15-question game: 3 fill, 3 who, 2 real, 3 fact, 2 billede, 2 skuespiller
+      const seq = ['fill', 'who', 'fill', 'who', 'real', 'fact', 'fill', 'billede', 'who', 'skuespiller', 'fact', 'real', 'billede', 'skuespiller', 'fact'];
+      let fi = 0, wi = 0, ri = 0, faci = 0, bi = 0, si = 0;
+      const pool = seq.map(kind => {
+        if (kind === 'fill') return fills[fi++ % Math.max(1, fills.length)];
+        if (kind === 'who') return whos[wi++ % Math.max(1, whos.length)];
+        if (kind === 'real') return reals[ri++ % Math.max(1, reals.length)];
+        if (kind === 'billede') return billeder[bi++ % Math.max(1, billeder.length)];
+        if (kind === 'skuespiller') return skuesp[si++ % Math.max(1, skuesp.length)];
+        return facts[faci++ % Math.max(1, facts.length)];
+      });
+
+      S.qs = pool.filter(Boolean);
+      showScreen('screen-game');
+      render();
+    }
+
+    function render() {
+      const q = S.qs[S.qi];
+      if (!q) { endGame(); return; }   // sikkerhedsguard – pool kan have færre end 15
+      S.done = false;
+      document.getElementById('rfExplanation').className = 'rf-explanation';
+      document.getElementById('rfExplanation').textContent = '';
+      updLives(); updScore();
+      document.getElementById('qCounter').textContent = `SPØRGSMÅL ${S.qi + 1} / ${S.qs.length}`;
+      const badge = document.getElementById('roundBadge');
+      const qText = document.getElementById('questionText');
+      const ans = document.getElementById('answersContainer');
+
+      const bi = BADGE_INFO[q.cat] || BADGE_INFO['citat_fill'];
+      badge.textContent = bi.text; badge.className = 'round-badge ' + bi.cls;
+
+      if (q.t === 'fill') {
+        const p = q.q.split('___');
+        qText.innerHTML = p[0] + '<span class="blank">___</span>' + (p[1] || '') +
+          (q.who ? `<span class="character-tag">— ${q.who}</span>` : '') +
+          (q.ep ? `<span class="episode-tag">Ep.${q.ep} · ${q.etitel}</span>` : '');
+        const g = makeGrid(shuf([...q.o]), q.a, q, 4);
+        ans.innerHTML = ''; ans.appendChild(g);
+        startTimer(9);
+      } else if (q.t === 'who') {
+        qText.innerHTML = q.q + (q.ep ? `<span class="episode-tag">Ep.${q.ep} · ${q.etitel}</span>` : '');
+        const g = makeGrid(shuf([...q.o]), q.a, q, 4);
+        ans.innerHTML = ''; ans.appendChild(g);
+        startTimer(7);
+      } else if (q.t === 'real') {
+        qText.innerHTML = q.q;
+        ans.innerHTML = '';
+        const g = document.createElement('div'); g.className = 'real-fake-grid';
+        const rb = mkBtn('ÆGTE', 'rf-btn real-btn', () => answer(q.a === 'ÆGTE', rb, g, q));
+        const fb = mkBtn('LØGN', 'rf-btn fake-btn', () => answer(q.a === 'LØGN', fb, g, q));
+        g.appendChild(rb); g.appendChild(fb); ans.appendChild(g);
+        startTimer(6);
+      } else if (q.cat === 'billede' || q.cat === 'skuespiller') {
+        // billede/skuespiller: vis foto hvis tilgængeligt, gæt karakter eller skuespillernavn
+        const imgHtml = q.img ? `<img src="${q.img}" class="char-illustration" alt="Matador skuespiller" onerror="this.style.display='none'">` : '';
+        qText.innerHTML = imgHtml + q.q;
+        const g = makeGrid(shuf([...q.o]), q.a, q, 4);
+        ans.innerHTML = ''; ans.appendChild(g);
+        startTimer(12);
+      } else {
+        // fact: handling / tidslinje / relation / lokation
+        qText.innerHTML = q.q + (q.ep ? `<span class="episode-tag">Ep.${q.ep} · ${q.etitel}</span>` : '');
+        const g = makeGrid(shuf([...q.o]), q.a, q, 4);
+        ans.innerHTML = ''; ans.appendChild(g);
+        startTimer(10);
+      }
+    }
+
+    function makeGrid(opts, correct, q, cols) {
+      const g = document.createElement('div');
+      g.className = `options-grid grid-${cols}`;
+      opts.forEach(o => {
+        const b = mkBtn(o, 'option-btn', () => answer(o === correct, b, g, q));
+        g.appendChild(b);
+      });
+      return g;
+    }
+    function mkBtn(txt, cls, cb) {
+      const b = document.createElement('button');
+      b.className = cls; b.textContent = txt; b.onclick = cb;
+      return b;
+    }
+
+    function answer(correct, btn, grid, q) {
+      if (S.done) return; S.done = true; clearTimer();
+      const elapsed = (Date.now() - S.tStart) / 1000;
+      let pts = 0, spd = false;
+
+      if (correct) {
+        sndOk(); S.correct++; S.combo++;
+        if (S.combo > S.maxCombo) S.maxCombo = S.combo;
+        pts = 100;
+        if (elapsed < 2) { pts += 50; spd = true; S.speed++; }
+        if (q.t === 'real') pts *= 2;
+        if (S.combo >= 5) pts = Math.round(pts * 3);
+        else if (S.combo >= 3) pts = Math.round(pts * 2);
+        S.score += pts; updScore(true);
+        btn.classList.add('correct');
+        flash('flash-green'); fb('RIGTIGT!', 'correct');
+        if (spd) { const t = document.getElementById('speedToast'); t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1500); }
+        if (S.combo === 3 || S.combo === 5 || S.combo % 5 === 0) { sndCombo(); comboExplosion(S.combo); }
+        updCombo();
+      } else {
+        sndNo(); S.combo = 0; S.lives--;
+        updLives(); updCombo();
+        btn.classList.add('wrong');
+        flash('flash-red'); shakeCard(); fb('FORKERT', 'wrong');
+        // reveal correct
+        if (q.t === 'real') {
+          Array.from(grid.children).forEach(b => {
+            const ok = (q.a === 'ÆGTE' && b.classList.contains('real-btn')) || (q.a === 'LØGN' && b.classList.contains('fake-btn'));
+            if (ok) b.classList.add('correct'); b.disabled = true;
+          });
+        } else {
+          Array.from(grid.children).forEach(b => { if (b.textContent === q.a) b.classList.add('correct'); b.disabled = true; });
+        }
+      }
+
+      if (q.expl) {
+        const e = document.getElementById('rfExplanation');
+        e.textContent = q.expl; e.classList.add('show');
+      }
+
+      Array.from(grid.children).forEach(b => b.disabled = true);
+      const delay = q.t === 'real' ? 2200 : 1400;
+      setTimeout(() => {
+        if (S.lives <= 0) { endGame(); return; }
+        S.qi++;
+        if (S.qi >= S.qs.length) { endGame(); return; }
+        render();
+      }, delay);
+    }
+
+    function timeout() {
+      if (S.done) return; S.done = true; S.combo = 0; S.lives--;
+      updLives(); updCombo(); sndNo(); flash('flash-red'); shakeCard(); fb('FOR SENT', 'wrong');
+      setTimeout(() => { if (S.lives <= 0) endGame(); else { S.qi++; if (S.qi >= S.qs.length) endGame(); else render(); } }, 1400);
+    }
+
+    // ════════════════════════════════════════════
+    // TIMER
+    // ════════════════════════════════════════════
+    function startTimer(sec) {
+      clearTimer(); S.tDur = sec * 1000; S.tStart = Date.now();
+      const bar = document.getElementById('timerBar'); bar.style.width = '100%'; bar.className = 'timer-bar';
+      S.timer = setInterval(() => {
+        const el = Date.now() - S.tStart;
+        const pct = Math.max(0, 100 - (el / S.tDur) * 100);
+        bar.style.width = pct + '%';
+        if (pct < 25) { bar.className = 'timer-bar warning'; if (Math.floor(el / 500) % 2 === 0) sndTick(); }
+        if (el >= S.tDur) { clearTimer(); timeout(); }
+      }, 50);
+    }
+    function clearTimer() { if (S.timer) { clearInterval(S.timer); S.timer = null; } }
+
+    // ════════════════════════════════════════════
+    // UI
+    // ════════════════════════════════════════════
+    function updLives() {
+      const d = document.getElementById('livesDisplay'); d.innerHTML = '';
+      for (let i = 0; i < 3; i++) { const s = document.createElement('span'); s.className = 'life' + (i >= S.lives ? ' lost' : ''); s.textContent = '♥'; d.appendChild(s); }
+    }
+    function updScore(gained) {
+      const el = document.getElementById('scoreValue'); el.textContent = S.score;
+      if (gained) { el.style.textShadow = '0 0 30px var(--gold)'; setTimeout(() => el.style.textShadow = '', 600); }
+    }
+    function updCombo() {
+      const b = document.getElementById('comboBadge');
+      if (S.combo >= 2) { b.textContent = `× ${S.combo} COMBO`; b.classList.add('visible'); } else b.classList.remove('visible');
+    }
+    function flash(cls) {
+      const el = document.getElementById('screenFlash'); el.className = 'screen-flash ' + cls;
+      el.style.animation = 'none'; el.offsetHeight; el.style.animation = 'fadeFlash 0.4s ease';
+    }
+    function shakeCard() { const c = document.getElementById('questionCard'); c.classList.remove('shake'); c.offsetHeight; c.classList.add('shake'); }
+    function fb(txt, type) {
+      const o = document.getElementById('feedbackOverlay'), ft = document.getElementById('feedbackText');
+      ft.textContent = txt; ft.className = 'feedback-text ' + type; o.classList.add('show'); setTimeout(() => o.classList.remove('show'), 700);
+    }
+    function comboExplosion(n) {
+      const el = document.getElementById('comboExplosion');
+      el.textContent = n >= 5 ? '× 3 COMBO!!' : n >= 3 ? '× 2 COMBO!' : n + ' I TRÆK!';
+      el.style.animation = 'none'; el.offsetHeight; el.style.animation = 'floatUp 1.2s ease forwards';
+    }
+
+    // ════════════════════════════════════════════
+    // GAME OVER
+    // ════════════════════════════════════════════
+    const INI_HINTS = [
+      // — Originale —
+      'Korsbæks skarpeste hoved',
+      'Mads Skjerns hemmelige nevø',
+      'Fru Møghes mest trofaste nabo',
+      'Agnes\' platoniske beundrer',
+      'Rødes klassekammerat fra militæret',
+      'Manuskript-memorist fra Jylland',
+      'Varnæs-familiens outsider',
+      'Pakhusmester på fri fod',
+      'Huserer på Korsbæk Kro',
+      'Ingeborg-beundrer i smug',
+      'Byens suverænt bedste kender',
+      'Handelsskolens store ess',
+      'Maudes platoniske ven',
+      'Skjern & Varnæs insider',
+      'Lauritz Jensen-tilhænger',
+      'Herbert Schmidts usynlige ven',
+      'Grisehandlerens søskendebarn',
+      'Konfirmand fra Korsbæk 1934',
+      'Pensioneret telegrafist',
+      'Kroens faste stamgæst nr. 1',
+      'Doktor Hansens ferniserings-bekendtskab',
+      'Misse-fan (men fortæller det ikke)',
+      'Byrådsmedlem for det skjulte parti',
+      'Replikjæger af første klasse',
+      'Seer af alle 24 afsnit (3 gange)',
+      // — Nye —
+      'Turde aldrig sige Røde imod',
+      'Lejlighed over Kristens butik',
+      'Spurgte Oluf om prisen én gang',
+      'Fik huslejen sat ned af Mads',
+      'Venstremand fra Jyllands støvede hjerte',
+      'Husker tydeligt ankomsten i episode 1',
+      'Drak kaffe med Ingeborg én gang',
+      'Gik til bal hos grevinden i 1936',
+      'Er gift med én der ligner Grisehandleren',
+      'Stemte på Lauritz Jensens parti – to gange',
+      'Gæst på Fru Vinthers pensionat (3 nætter)',
+      'Korsbæk Postens anonyme abonnent',
+      'Sov igennem hele 2. verdenskrig',
+      'Levede af Oles bageri og radioen',
+      'Den eneste der kendte Boldts hemmelighed',
+      'Aldrig gået glip af et eneste afsnit',
+      'Skjoldhammers golfkammerat fra ungdommen',
+      'Husker stadig det første kys ved bryggerhuset',
+      'Fru Møghes mest frygtede bud',
+      'Katrine Larsens foretrukne strikkeven',
+      'Vognmandens ukendte halvbror',
+      'Rodehovedets nabo i opgangen',
+      'Skjolds tavshedsedsværgede kammerat',
+      'Gik tidligt fra Mathildekroen (som altid)',
+      'Varnæs-bankens dygtigste revisor (pension)',
+      'Mette-fan uden undskyldning',
+      'Familien Varnæs\' fjerne, nysgerrige slægtning',
+      'Anbefalet quizzen af en tidligere nabo',
+      'Ugentlig gæst ved bankens indgang',
+      'Korsbæks stilfærdige, anonyme beundrer',
+      'Har grådt ved alle 24 afsnit',
+      'Husker duften af Agnes\' frikadeller',
+      'Citerede Schwann ved senest tre middage',
+      'Kendte nogen der kendte nogen i Korsbæk',
+      'Mads\' næstbedste sælger i provinsen',
+      'Smed bogen efter den engelske udgave',
+      'Tvang familien til gennemsyn hvert nytår',
+    ];
+    function endGame() {
+      clearTimer(); S.lastScore = S.score;
+      document.getElementById('gameoverScore').textContent = S.score;
+      document.getElementById('statCorrect').textContent = S.correct;
+      document.getElementById('statCombo').textContent = S.maxCombo > 0 ? '×' + S.maxCombo : '–';
+      document.getElementById('statSpeed').textContent = S.speed;
+      if (S.score > 600) sndFan();
+      showScreen('screen-gameover');
+      // Random Matador-themed placeholder
+      const inp = document.getElementById('initialsInput');
+      inp.value = '';
+      inp.placeholder = INI_HINTS[Math.floor(Math.random() * INI_HINTS.length)];
+      setTimeout(() => inp.focus(), 400);
+    }
+    async function shareScore() {
+      const score = S.lastScore;
+      const correct = S.correct;
+      const name = (document.getElementById('initialsInput').value.trim()) || 'Korsbækkener';
+      const emojis = score >= 2000 ? '🏆🥇' : score >= 1200 ? '🎩✨' : score >= 600 ? '👏🎶' : '📺';
+      const text = `${emojis} ${name} fik ${score} point i Korsbæk-quizzen! (${correct} rigtige svar)\nKan du slå det? 🎭\n👉 korsbæk-quiz.html`;
+      const shareData = { title: 'Korsbæk-quizzen', text };
+      const btn = document.querySelector('[onclick="shareScore()"]');
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (e) { /* bruger annullerede */ }
+      } else {
+        try {
+          await navigator.clipboard.writeText(text);
+          if (btn) { const orig = btn.textContent; btn.textContent = 'KOPIERET!'; setTimeout(() => btn.textContent = orig, 2000); }
+        } catch (e) {
+          // Fallback: tekstboks til manuel kopiering
+          const box = document.createElement('textarea');
+          box.value = text;
+          box.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;padding:12px;font-size:13px;background:#2a1e0a;color:#f5deb3;border:1px solid #c8a84b;border-radius:8px;z-index:9999;';
+          document.body.appendChild(box); box.select();
+          setTimeout(() => box.remove(), 8000);
+        }
+      }
+    }
+
+    async function saveAndContinue() {
+      const ini = (document.getElementById('initialsInput').value.trim().slice(0, 40)) || document.getElementById('initialsInput').placeholder || 'Anonym';
+      const btn = document.querySelector('[onclick="saveAndContinue()"]');
+      if (btn) { btn.disabled = true; btn.textContent = 'GEMMER…'; }
+      const ok = await saveScore(ini, S.lastScore);
+      if (!ok) {
+        if (btn) { btn.disabled = false; btn.textContent = 'GEM SCORE'; }
+        const warn = document.createElement('div');
+        warn.style.cssText = 'position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#8b0000;color:#fff;padding:10px 22px;border-radius:8px;z-index:9999;font-size:13px;text-align:center;';
+        warn.textContent = '⚠️ Kunne ikke gemme score – prøv igen eller åbn via en webserver.';
+        document.body.appendChild(warn); setTimeout(() => warn.remove(), 5000);
+        return;
+      }
+      // Small delay so Supabase has time to commit before we read
+      await new Promise(r => setTimeout(r, 450));
+      showScores(ini, S.lastScore);
+    }
+
+    // ════════════════════════════════════════════
+    // SCORES – Supabase
+    // ════════════════════════════════════════════
+    async function saveScore(ini, score) {
+      try {
+        const r = await fetch(SB_URL + '/rest/v1/scores', {
+          method: 'POST',
+          headers: { apikey: SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ initials: ini, score: score, correct: S.correct, max_combo: S.maxCombo, speed_bonuses: S.speed })
+        });
+        if (!r.ok) {
+          const body = await r.text().catch(() => '');
+          console.warn('Score gem fejlede:', r.status, body);
+          return false;
+        }
+        return true;
+      } catch (e) {
+        console.warn('Score gem fejlede:', e);
+        return false;
+      }
+    }
+
+    async function loadHomeTop10() {
+      const el = document.getElementById('homeTop10Content');
+      if (!el) return;
+      try {
+        const scores = await sbFetch('/rest/v1/scores?select=initials,score&order=score.desc&limit=10');
+        if (!scores.length) { el.innerHTML = '<em>Ingen scores endnu — vær den første!</em>'; return; }
+        const rows = scores.map((s, i) => {
+          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+          return `<div style="display:flex;justify-content:space-between;padding:3px 12px;${i % 2 === 0 ? 'background:rgba(200,168,75,0.04)' : ''}">
+        <span style="color:#7a6838;min-width:22px">${i + 1}.</span>
+        <span style="flex:1;text-align:left;color:#c8a84b;letter-spacing:1px;">${medal}${s.initials}</span>
+        <span style="color:#e0c060;font-weight:bold;">${s.score.toLocaleString('da-DK')}</span>
+      </div>`;
+        }).join('');
+        el.innerHTML = `<div style="border:1px solid rgba(200,168,75,0.15);border-radius:6px;overflow:hidden;padding:4px 0;">${rows}</div>`;
+      } catch (e) { el.innerHTML = ''; }
+    }
+
+    async function showScores(hlI, hlS) {
+      showScreen('screen-loading');
+      document.querySelector('#screen-loading .logo-sub').textContent = 'Henter highscores…';
+      let scores = [];
+      try {
+        scores = await sbFetch('/rest/v1/scores?select=initials,score,created_at&order=score.desc&limit=100');
+      } catch (e) { scores = []; }
+      document.querySelector('#screen-loading .logo-sub').textContent = 'Henter spørgsmål…';
+      const content = document.getElementById('scoresContent');
+      if (!scores.length) {
+        content.innerHTML = '<div class="no-scores">Ingen scores endnu — vær den første!</div>';
+      } else {
+        let matched = false;
+        let rows = scores.map((s, i) => {
+          const d = new Date(s.created_at).toLocaleDateString('da-DK');
+          const hl = hlI && s.initials === hlI && s.score === hlS && !matched; if (hl) matched = true;
+          return `<tr class="${hl ? 'highlight' : ''}"><td class="rank">${i + 1}</td><td class="initials-cell">${s.initials}</td><td class="score-cell">${s.score.toLocaleString('da-DK')}</td><td class="date-cell">${d}</td></tr>`;
+        }).join('');
+        content.innerHTML = `<table class="scores-table"><thead><tr><th>#</th><th>Navn</th><th>Score</th><th>Dato</th></tr></thead><tbody>${rows}</tbody></table>`;
+      }
+      showScreen('screen-scores');
+    }
+
+    // ════════════════════════════════════════════
+    // UTILS
+    // ════════════════════════════════════════════
+    function shuf(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+    // Load top 10 on homepage on startup
+    document.addEventListener('DOMContentLoaded', () => loadHomeTop10());
+
+  </script>
+</body>
+
+</html>
