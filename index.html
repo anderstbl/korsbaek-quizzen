@@ -925,6 +925,82 @@
       animation: shake 0.4s ease;
     }
 
+    /* ══ BONUS SCREEN ══ */
+    .bonus-crown {
+      font-size: 60px;
+      animation: crownPulse 2s ease-in-out infinite;
+      margin-bottom: 6px;
+    }
+    @keyframes crownPulse {
+      0%, 100% { transform: scale(1);   filter: drop-shadow(0 0 8px #c8a84b); }
+      50%       { transform: scale(1.1); filter: drop-shadow(0 0 22px #ffd700); }
+    }
+    .bonus-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 900;
+      color: #c8a84b; letter-spacing: 4px;
+      text-align: center; margin: 0 0 4px;
+    }
+    .bonus-intro {
+      font-family: 'Crete Round', serif;
+      font-size: 14px; color: var(--text);
+      text-align: center; max-width: 360px;
+      line-height: 1.5; margin: 8px auto 18px;
+      opacity: 0.85;
+    }
+    .bonus-question-card {
+      background: linear-gradient(135deg, #1A4838 0%, #0e2c22 100%);
+      border: 2px solid #c8a84b; border-radius: 4px;
+      padding: 22px 26px; max-width: 480px; width: 100%;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 40px rgba(200,168,75,0.25), inset 0 0 50px rgba(0,0,0,0.2);
+    }
+    .bonus-badge {
+      display: inline-block; background: #c8a84b; color: #1A1A2E;
+      font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; padding: 4px 12px; border-radius: 2px; margin-bottom: 14px;
+    }
+    .bonus-timer {
+      height: 4px; background: rgba(200,168,75,0.2);
+      border-radius: 2px; margin-bottom: 14px; overflow: hidden;
+    }
+    .bonus-timer-bar {
+      height: 100%; background: #c8a84b;
+      border-radius: 2px; transition: width 0.1s linear;
+    }
+    .bonus-question-text {
+      font-family: 'Crete Round', serif; font-size: 16px;
+      color: #FAF6EF; line-height: 1.55; text-align: center; margin-bottom: 18px;
+    }
+    .bonus-result { max-width: 480px; width: 100%; text-align: center; }
+    .bonus-result-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px; font-weight: 900; letter-spacing: 2px; margin-bottom: 6px;
+    }
+    .bonus-result-title.won { color: #c8a84b; text-shadow: 0 0 28px rgba(200,168,75,0.7); }
+    .bonus-result-title.lost { color: #8b4513; }
+    .bonus-result-pts {
+      font-family: 'Oswald', sans-serif; font-size: 50px; font-weight: 700;
+      color: #c8a84b; text-shadow: 0 0 20px rgba(200,168,75,0.4); margin: 6px 0;
+    }
+    .bonus-result-pts.zero { color: #7A7A8A; text-shadow: none; }
+    .bonus-result-expl {
+      font-family: 'Crete Round', serif; font-size: 13px;
+      color: var(--text); line-height: 1.5; max-width: 400px;
+      margin: 12px auto 20px; opacity: 0.85; font-style: italic;
+    }
+    /* Konfetti-partikler */
+    .confetti-p {
+      position: fixed; top: -12px; border-radius: 2px;
+      pointer-events: none; z-index: 9999;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(0)     rotate(0deg);   opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translateY(110vh) rotate(800deg); opacity: 0; }
+    }
+
     @media(max-width:500px) {
       .options-grid.grid-4 {
         grid-template-columns: 1fr
@@ -1844,6 +1920,32 @@
     </div>
   </div>
 
+  <!-- ══ BONUS ══ -->
+  <div class="screen" id="screen-bonus">
+    <div class="bonus-crown" id="bonusCrown">👑</div>
+    <div class="bonus-title" id="bonusTitle">BONUS SPØRGSMÅL</div>
+    <div class="ornament">— ◆ —</div>
+    <div class="bonus-intro" id="bonusIntro">Perfekt score! Alle 15 rigtige.<br>Klarer du det ultimative ekspert-spørgsmål?</div>
+
+    <div class="bonus-question-card" id="bonusCard">
+      <div style="text-align:center;margin-bottom:0">
+        <span class="bonus-badge">⭐ EKSPERT-NIVEAU</span>
+      </div>
+      <div class="bonus-timer"><div class="bonus-timer-bar" id="bonusTimerBar"></div></div>
+      <div class="bonus-question-text" id="bonusQuestionText"></div>
+      <div id="bonusOptionsContainer"></div>
+    </div>
+
+    <div class="bonus-result" id="bonusResult" style="display:none">
+      <div class="bonus-result-title" id="bonusResultTitle"></div>
+      <div class="bonus-result-pts" id="bonusResultPts"></div>
+      <div class="bonus-result-expl" id="bonusResultExpl"></div>
+      <div class="btn-group" style="margin-top:8px">
+        <button class="btn btn-primary" onclick="endGame()">SE RESULTAT</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ============================================================
     // ── TEMA TOGGLE ──────────────────────────────────
@@ -2568,7 +2670,10 @@
       setTimeout(() => {
         if (S.lives <= 0) { endGame(); return; }
         S.qi++;
-        if (S.qi >= S.qs.length) { endGame(); return; }
+        if (S.qi >= S.qs.length) {
+          if (S.correct === S.qs.length) showBonusQuestion(); else endGame();
+          return;
+        }
         render();
       }, delay);
     }
@@ -2814,6 +2919,116 @@
         content.innerHTML = `<table class="scores-table"><thead><tr><th>#</th><th>Navn</th><th>Score</th><th>Dato</th></tr></thead><tbody>${rows}</tbody></table>`;
       }
       showScreen('screen-scores');
+    }
+
+    // ════════════════════════════════════════════
+    // BONUS QUESTION
+    // ════════════════════════════════════════════
+    const BONUS_Q = {
+      q: 'Hvad arbejdede skuespilleren Niels Martin Carlsen som, da han fik rollen som den voksne Daniel Skjern?',
+      a: 'Taxachauffør',
+      o: ['Taxachauffør', 'Folkeskolelærer', 'Journalist', 'Frisør'],
+      expl: 'Niels Martin Carlsen var uddannet fra Statens Teaterskole (1975–78), men kørte taxa da Erik Balling castede ham som den voksne Daniel. Han endte med at vende tilbage som taxavognmand – og kørte ifølge overleveringen Lise Nørgaard hjem i sin taxa da hele holdet mødtes for sidste gang.'
+    };
+    let bonusTimerInt = null;
+
+    function sndBonusIntro() {
+      // Dramatisk stigende fanfare
+      [392, 494, 587, 740, 988].forEach((f, i) => tone(f, 'triangle', .4, .22, i * .13));
+      tone(1175, 'triangle', .9, .28, .72);
+    }
+    function sndBonusWin() {
+      // Triumf-akkorder
+      [523, 659, 784, 1047].forEach((f, i) => tone(f, 'triangle', .5, .28, i * .1));
+      setTimeout(() => [784, 988, 1319].forEach((f, i) => tone(f, 'triangle', .6, .25, i * .09)), 550);
+      setTimeout(() => tone(1568, 'triangle', .9, .3), 1100);
+    }
+
+    function spawnConfetti() {
+      const colors = ['#c8a84b','#ffd700','#FAF6EF','#1A4838','#e8c86c','#8a6f28','#ffffff'];
+      for (let i = 0; i < 90; i++) {
+        setTimeout(() => {
+          const p = document.createElement('div');
+          p.className = 'confetti-p';
+          p.style.cssText = `left:${Math.random()*100}vw;width:${Math.random()*7+4}px;height:${Math.random()*7+4}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*2+2.2}s`;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 4800);
+        }, Math.random() * 1200);
+      }
+    }
+
+    function showBonusQuestion() {
+      showScreen('screen-bonus');
+      document.getElementById('bonusCard').style.display = '';
+      document.getElementById('bonusResult').style.display = 'none';
+      document.getElementById('bonusCrown').style.display = '';
+      document.getElementById('bonusTitle').style.display = '';
+      document.getElementById('bonusIntro').style.display = '';
+      document.getElementById('bonusTimerBar').style.background = '#c8a84b';
+      document.getElementById('bonusTimerBar').style.width = '100%';
+
+      document.getElementById('bonusQuestionText').textContent = BONUS_Q.q;
+      const container = document.getElementById('bonusOptionsContainer');
+      container.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'options-grid grid-2';
+      shuf([...BONUS_Q.o]).forEach(opt => {
+        const b = mkBtn(opt, 'option-btn', () => answerBonus(opt === BONUS_Q.a, b, grid));
+        grid.appendChild(b);
+      });
+      container.appendChild(grid);
+
+      sndBonusIntro();
+      startBonusTimer(15, grid);
+    }
+
+    function startBonusTimer(sec, grid) {
+      clearBonusTimer();
+      const bar = document.getElementById('bonusTimerBar');
+      const start = Date.now(); const dur = sec * 1000;
+      bonusTimerInt = setInterval(() => {
+        const pct = Math.max(0, 100 - ((Date.now() - start) / dur) * 100);
+        bar.style.width = pct + '%';
+        if (pct < 25) bar.style.background = '#c0392b';
+        if (Date.now() - start >= dur) {
+          clearBonusTimer();
+          Array.from(grid.children).forEach(b => b.disabled = true);
+          answerBonus(false, null, grid);
+        }
+      }, 60);
+    }
+    function clearBonusTimer() { if (bonusTimerInt) { clearInterval(bonusTimerInt); bonusTimerInt = null; } }
+
+    function answerBonus(correct, btn, grid) {
+      clearBonusTimer();
+      Array.from(grid.children).forEach(b => {
+        if (b.textContent === BONUS_Q.a) b.classList.add('correct');
+        b.disabled = true;
+      });
+      setTimeout(() => {
+        document.getElementById('bonusCard').style.display = 'none';
+        document.getElementById('bonusCrown').style.display = 'none';
+        document.getElementById('bonusTitle').style.display = 'none';
+        document.getElementById('bonusIntro').style.display = 'none';
+        const result = document.getElementById('bonusResult');
+        result.style.display = '';
+        if (correct) {
+          S.score += 500;
+          sndBonusWin();
+          spawnConfetti();
+          document.getElementById('bonusResultTitle').textContent = '🏆 MESTERLIG! 🏆';
+          document.getElementById('bonusResultTitle').className = 'bonus-result-title won';
+          document.getElementById('bonusResultPts').textContent = '+500 POINT';
+          document.getElementById('bonusResultPts').className = 'bonus-result-pts';
+        } else {
+          sndNo();
+          document.getElementById('bonusResultTitle').textContent = 'Næsten...';
+          document.getElementById('bonusResultTitle').className = 'bonus-result-title lost';
+          document.getElementById('bonusResultPts').textContent = '+0 POINT';
+          document.getElementById('bonusResultPts').className = 'bonus-result-pts zero';
+        }
+        document.getElementById('bonusResultExpl').textContent = BONUS_Q.expl;
+      }, 900);
     }
 
     // ════════════════════════════════════════════
