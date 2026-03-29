@@ -2924,12 +2924,69 @@
     // ════════════════════════════════════════════
     // BONUS QUESTION
     // ════════════════════════════════════════════
-    const BONUS_Q = {
-      q: 'Hvad arbejdede skuespilleren Niels Martin Carlsen som, da han fik rollen som den voksne Daniel Skjern?',
-      a: 'Taxachauffør',
-      o: ['Taxachauffør', 'Folkeskolelærer', 'Journalist', 'Frisør'],
-      expl: 'Niels Martin Carlsen var uddannet fra Statens Teaterskole (1975–78), men kørte taxa da Erik Balling castede ham som den voksne Daniel. Han endte med at vende tilbage som taxavognmand – og kørte ifølge overleveringen Lise Nørgaard hjem i sin taxa da hele holdet mødtes for sidste gang.'
-    };
+    const BONUS_QS = [
+      {
+        q: 'Hvad arbejdede skuespilleren Niels Martin Carlsen som, da han fik rollen som den voksne Daniel Skjern?',
+        a: 'Taxachauffør',
+        o: ['Taxachauffør', 'Folkeskolelærer', 'Journalist', 'Frisør'],
+        expl: 'Niels Martin Carlsen var uddannet fra Statens Teaterskole, men kørte taxa da Erik Balling castede ham som den voksne Daniel. Han vendte siden tilbage som taxavognmand og kørte angiveligt Lise Nørgaard hjem da holdet mødtes for allersidste gang.'
+      },
+      {
+        q: 'Hvad fik Jørgen Buckhøj (Mads Skjern) i honorar per afsnit?',
+        a: '1 krone',
+        o: ['1 krone', '1.000 kroner', '10.000 kroner', 'Ingen betaling overhovedet'],
+        expl: 'Til trods for rollen som seriens absolutte hovedperson fik Jørgen Buckhøj kun 1 krone per afsnit – 24 kroner i alt for hele serien. Baggrunden for den symbolske aftale er ikke fuldt dokumenteret. Kilde: filmsiden.dk / SE og HØR.'
+      },
+      {
+        q: 'Hvad skete der, da skuespilleren Arthur Jensen (Hr. Schwann) krævede mere i løn efter de første 6 afsnit?',
+        a: 'Erik Balling slog hans karakter ihjel',
+        o: ['Erik Balling slog hans karakter ihjel', 'Han fik sin lønforhøjelse', 'Han trak kravet tilbage', 'Han blev erstattet af en anden skuespiller'],
+        expl: 'Da Arthur Jensen krævede højere honorar, svarede Erik Balling ved at skrive Hr. Schwann ud af serien – permanent. Det var en effektiv måde at afslutte diskussionen på. Kilde: Wikipedia.'
+      },
+      {
+        q: 'Hvilken berømt skuespiller så alle 24 afsnit og bekendte over for Ghita Nørby, at han havde forelsket sig i hendes karakter Ingeborg Skjern?',
+        a: 'Roger Moore',
+        o: ['Roger Moore', 'Sean Connery', 'Michael Caine', 'Anthony Hopkins'],
+        expl: 'Roger Moore modtog den komplette Matador-boks fra Ghita Nørby og så alle afsnit. Han indrømmede siden over for hende, at han var faldet for karakteren Ingeborg Skjern. Kilde: SE og HØR.'
+      },
+      {
+        q: 'Hvad forestillede dronning Margrethe og prins Henrik, da de mødte op til Bent Fabricius-Bjerres nytårsfest med Matador-tema?',
+        a: 'Misse og Fru Fernando Møhge',
+        o: ['Misse og Fru Fernando Møhge', 'Ingeborg og Mads Skjern', 'Agnes og Røde', 'Katrine og Grisehandleren'],
+        expl: 'Dronning Margrethe og prins Henrik mødte op udklædt som henholdsvis Misse og Fru Fernando Møhge til Bent Fabricius-Bjerres nytårsfest. Kilde: SE og HØR.'
+      },
+      {
+        q: 'Hvilket klassisk musikværk danner grundlag for Elisabeth-motivet i Matadors musik?',
+        a: 'Mozarts klaverkoncert nr. 23 i A-dur, KV 488',
+        o: ['Mozarts klaverkoncert nr. 23 i A-dur, KV 488', 'Beethovens Måneskinssonaten', 'Bachs Goldberg-variationer', 'Schuberts "Der Erlkönig"'],
+        expl: 'Bent Fabricius-Bjerre baserede Elisabeth-motivet på anden sats af Mozarts klaverkoncert nr. 23 i A-dur, KV 488. Kilde: Wikipedia.'
+      },
+      {
+        q: 'Hvilken rolle var Malene Schwartz (Maude Varnæs) oprindeligt tiltænkt?',
+        a: 'Elisabeth Friis',
+        o: ['Elisabeth Friis', 'Agnes Jensen', 'Fru Fernando Møhge', 'Katrine Larsen'],
+        expl: 'Malene Schwartz var i første omgang castet som Elisabeth Friis, men blev i stedet tildelt rollen som den selskabsorienterede Maude Varnæs. Kilde: filmsiden.dk / SE og HØR.'
+      },
+      {
+        q: 'Hvad opfandt manuskriptforfatter Poul Hammerich ved at kombinere navnene på to rigtige danske byer?',
+        a: 'Bynavnet "Korsbæk"',
+        o: ['Bynavnet "Korsbæk"', 'Seriens titel "Matador"', 'Familien Varnæs\' efternavn', 'Tøjhusets navn'],
+        expl: 'Poul Hammerich skabte det fiktive bynavn "Korsbæk" ved at sammensætte Korsør og Holbæk. Det var ikke Lise Nørgaard, der fandt på navnet. Kilde: filmsiden.dk / SE og HØR.'
+      },
+      {
+        q: 'Hvorfor foregik de fleste optagelser til Matador om morgenen fra kl. 8 til ca. 11:30?',
+        a: 'Skuespillerne havde teaterforestillinger om aftenen',
+        o: ['Skuespillerne havde teaterforestillinger om aftenen', 'Dagslyset var bedst tidligt om morgenen', 'Studiet var optaget om eftermiddagen til andre produktioner', 'Det var billigst at leje udstyr om morgenen'],
+        expl: 'Optagelsestidspunktet var tilrettelagt efter skuespillernes teaterkontrakter – mange medvirkende spillede aftener på de københavnske teatre sideløbende med indspilningerne. Kilde: Wikipedia.'
+      },
+      {
+        q: 'Holger Juul Hansen (Varnæs) og Jesper Langberg blev undervejs transporteret i ambulance til optagelserne. Hvad var årsagen?',
+        a: 'De spillede teater i Jylland og skulle nå settet i tide',
+        o: ['De spillede teater i Jylland og skulle nå settet i tide', 'De var begge indlagt men insisterede på at medvirke', 'DR arrangerede det som PR-stunt', 'Settet lå uden for offentlig transport'],
+        expl: 'For at nå optagelserne efter aftenforestillinger med "Indenfor murene" i Jylland blev Holger Juul Hansen og Jesper Langberg transporteret til settet i ambulance. Kilde: Wikipedia.'
+      }
+    ];
+    let currentBonusQ = null;
     let bonusTimerInt = null;
 
     function sndBonusIntro() {
@@ -2967,13 +3024,14 @@
       document.getElementById('bonusTimerBar').style.background = '#c8a84b';
       document.getElementById('bonusTimerBar').style.width = '100%';
 
-      document.getElementById('bonusQuestionText').textContent = BONUS_Q.q;
+      currentBonusQ = BONUS_QS[Math.floor(Math.random() * BONUS_QS.length)];
+      document.getElementById('bonusQuestionText').textContent = currentBonusQ.q;
       const container = document.getElementById('bonusOptionsContainer');
       container.innerHTML = '';
       const grid = document.createElement('div');
       grid.className = 'options-grid grid-2';
-      shuf([...BONUS_Q.o]).forEach(opt => {
-        const b = mkBtn(opt, 'option-btn', () => answerBonus(opt === BONUS_Q.a, b, grid));
+      shuf([...currentBonusQ.o]).forEach(opt => {
+        const b = mkBtn(opt, 'option-btn', () => answerBonus(opt === currentBonusQ.a, b, grid));
         grid.appendChild(b);
       });
       container.appendChild(grid);
@@ -3002,7 +3060,7 @@
     function answerBonus(correct, btn, grid) {
       clearBonusTimer();
       Array.from(grid.children).forEach(b => {
-        if (b.textContent === BONUS_Q.a) b.classList.add('correct');
+        if (b.textContent === currentBonusQ.a) b.classList.add('correct');
         b.disabled = true;
       });
       setTimeout(() => {
@@ -3027,7 +3085,7 @@
           document.getElementById('bonusResultPts').textContent = '+0 POINT';
           document.getElementById('bonusResultPts').className = 'bonus-result-pts zero';
         }
-        document.getElementById('bonusResultExpl').textContent = BONUS_Q.expl;
+        document.getElementById('bonusResultExpl').textContent = currentBonusQ.expl;
       }, 900);
     }
 
