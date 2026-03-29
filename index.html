@@ -1968,6 +1968,7 @@
 
     // In-memory question cache
     let QCACHE = null;
+    let BONUS_CACHE = null;
 
     async function sbFetch(path) {
       const r = await fetch(SB_URL + path, {
@@ -1994,6 +1995,25 @@
         img: r.image_url || null, // URL til karakterillustration (billede-kategori)
       }));
       return QCACHE;
+    }
+
+    async function loadBonusQuestions() {
+      if (BONUS_CACHE) return BONUS_CACHE;
+      try {
+        const rows = await sbFetch('/rest/v1/bonus_questions?select=*&active=eq.true&order=id.asc');
+        if (rows && rows.length) {
+          BONUS_CACHE = rows.map(r => ({
+            q: r.question,
+            a: r.answer,
+            o: r.options,
+            expl: r.explanation
+          }));
+          return BONUS_CACHE;
+        }
+      } catch (e) {
+        console.warn('Bonus-spørgsmål ikke tilgængelige fra database, bruger lokalt fallback');
+      }
+      return BONUS_QS; // hardcodet fallback
     }
 
     // ============================================================
@@ -3014,17 +3034,20 @@
       }
     }
 
-    function showBonusQuestion() {
+    async function showBonusQuestion() {
       showScreen('screen-bonus');
-      document.getElementById('bonusCard').style.display = '';
+      document.getElementById('bonusCard').style.display = 'none';
       document.getElementById('bonusResult').style.display = 'none';
       document.getElementById('bonusCrown').style.display = '';
       document.getElementById('bonusTitle').style.display = '';
       document.getElementById('bonusIntro').style.display = '';
+
+      const pool = await loadBonusQuestions();
+      currentBonusQ = pool[Math.floor(Math.random() * pool.length)];
+
+      document.getElementById('bonusCard').style.display = '';
       document.getElementById('bonusTimerBar').style.background = '#c8a84b';
       document.getElementById('bonusTimerBar').style.width = '100%';
-
-      currentBonusQ = BONUS_QS[Math.floor(Math.random() * BONUS_QS.length)];
       document.getElementById('bonusQuestionText').textContent = currentBonusQ.q;
       const container = document.getElementById('bonusOptionsContainer');
       container.innerHTML = '';

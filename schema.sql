@@ -48,6 +48,79 @@ DROP POLICY IF EXISTS public_insert_scores ON scores;
 CREATE POLICY public_insert_scores ON scores
   FOR INSERT TO anon WITH CHECK (true);
 
+-- ── BONUS QUESTIONS TABLE ────────────────────────────────────
+-- Vises kun til spillere der svarer alle normale spørgsmål rigtigt
+CREATE TABLE IF NOT EXISTS bonus_questions (
+  id          SERIAL PRIMARY KEY,
+  question    TEXT         NOT NULL,
+  answer      TEXT         NOT NULL,
+  options     JSONB        NOT NULL,   -- array med 4 svarmuligheder
+  explanation TEXT,
+  active      BOOLEAN      DEFAULT true,
+  created_at  TIMESTAMPTZ  DEFAULT NOW()
+);
+
+ALTER TABLE bonus_questions ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS public_read_bonus ON bonus_questions;
+CREATE POLICY public_read_bonus ON bonus_questions
+  FOR SELECT TO anon USING (active = true);
+
+CREATE INDEX IF NOT EXISTS idx_bonus_active ON bonus_questions(active);
+
+DELETE FROM bonus_questions;
+
+INSERT INTO bonus_questions (question, answer, options, explanation) VALUES
+('Hvad arbejdede skuespilleren Niels Martin Carlsen som, da han fik rollen som den voksne Daniel Skjern?',
+ 'Taxachauffør',
+ '["Taxachauffør","Folkeskolelærer","Journalist","Frisør"]',
+ 'Niels Martin Carlsen var uddannet fra Statens Teaterskole, men kørte taxa da Erik Balling castede ham som den voksne Daniel. Han vendte siden tilbage som taxavognmand og kørte angiveligt Lise Nørgaard hjem da holdet mødtes for allersidste gang. (Kilde: Wikipedia / SE og HØR)'),
+
+('Hvad fik Jørgen Buckhøj (Mads Skjern) i honorar per afsnit?',
+ '1 krone',
+ '["1 krone","1.000 kroner","10.000 kroner","Ingen betaling overhovedet"]',
+ 'Til trods for rollen som seriens absolutte hovedperson fik Jørgen Buckhøj kun 1 krone per afsnit – 24 kroner i alt for hele serien. (Kilde: filmsiden.dk / SE og HØR)'),
+
+('Hvad skete der, da skuespilleren Arthur Jensen (Hr. Schwann) krævede mere i løn efter de første 6 afsnit?',
+ 'Erik Balling slog hans karakter ihjel',
+ '["Erik Balling slog hans karakter ihjel","Han fik sin lønforhøjelse","Han trak kravet tilbage","Han blev erstattet af en anden skuespiller"]',
+ 'Da Arthur Jensen krævede højere honorar, svarede Erik Balling ved at skrive Hr. Schwann ud af serien – permanent. (Kilde: Wikipedia)'),
+
+('Hvilken berømt skuespiller så alle 24 afsnit og bekendte over for Ghita Nørby, at han havde forelsket sig i hendes karakter Ingeborg Skjern?',
+ 'Roger Moore',
+ '["Roger Moore","Sean Connery","Michael Caine","Anthony Hopkins"]',
+ 'Roger Moore modtog den komplette Matador-boks fra Ghita Nørby og så alle afsnit. Han indrømmede siden, at han var faldet for karakteren Ingeborg Skjern. (Kilde: SE og HØR)'),
+
+('Hvad forestillede dronning Margrethe og prins Henrik, da de mødte op til Bent Fabricius-Bjerres nytårsfest med Matador-tema?',
+ 'Misse og Fru Fernando Møhge',
+ '["Misse og Fru Fernando Møhge","Ingeborg og Mads Skjern","Agnes og Røde","Katrine og Grisehandleren"]',
+ 'Dronning Margrethe og prins Henrik mødte op udklædt som henholdsvis Misse og Fru Fernando Møhge til Bent Fabricius-Bjerres nytårsfest. (Kilde: SE og HØR)'),
+
+('Hvilket klassisk musikværk danner grundlag for Elisabeth-motivet i Matadors musik?',
+ 'Mozarts klaverkoncert nr. 23 i A-dur, KV 488',
+ '["Mozarts klaverkoncert nr. 23 i A-dur, KV 488","Beethovens Måneskinssonaten","Bachs Goldberg-variationer","Schuberts \"Der Erlkönig\""]',
+ 'Bent Fabricius-Bjerre baserede Elisabeth-motivet på anden sats af Mozarts klaverkoncert nr. 23 i A-dur, KV 488. (Kilde: Wikipedia)'),
+
+('Hvilken rolle var Malene Schwartz (Maude Varnæs) oprindeligt tiltænkt?',
+ 'Elisabeth Friis',
+ '["Elisabeth Friis","Agnes Jensen","Fru Fernando Møhge","Katrine Larsen"]',
+ 'Malene Schwartz var i første omgang castet som Elisabeth Friis, men blev i stedet tildelt rollen som den selskabsorienterede Maude Varnæs. (Kilde: filmsiden.dk / SE og HØR)'),
+
+('Hvad opfandt manuskriptforfatter Poul Hammerich ved at kombinere navnene på to rigtige danske byer?',
+ 'Bynavnet "Korsbæk"',
+ '["Bynavnet \"Korsbæk\"","Seriens titel \"Matador\"","Familien Varnæs'' efternavn","Tøjhusets navn"]',
+ 'Poul Hammerich skabte det fiktive bynavn "Korsbæk" ved at sammensætte Korsør og Holbæk. Det var ikke Lise Nørgaard, der fandt på navnet. (Kilde: filmsiden.dk / SE og HØR)'),
+
+('Hvorfor foregik de fleste optagelser til Matador om morgenen fra kl. 8 til ca. 11:30?',
+ 'Skuespillerne havde teaterforestillinger om aftenen',
+ '["Skuespillerne havde teaterforestillinger om aftenen","Dagslyset var bedst tidligt om morgenen","Studiet var optaget om eftermiddagen til andre produktioner","Det var billigst at leje udstyr om morgenen"]',
+ 'Optagelsestidspunktet var tilrettelagt efter skuespillernes teaterkontrakter – mange medvirkende spillede aftener på de københavnske teatre sideløbende med indspilningerne. (Kilde: Wikipedia)'),
+
+('Holger Juul Hansen (Varnæs) og Jesper Langberg blev undervejs transporteret i ambulance til optagelserne. Hvad var årsagen?',
+ 'De spillede teater i Jylland og skulle nå settet i tide',
+ '["De spillede teater i Jylland og skulle nå settet i tide","De var begge indlagt men insisterede på at medvirke","DR arrangerede det som PR-stunt","Settet lå uden for offentlig transport"]',
+ 'For at nå optagelserne efter aftenforestillinger med "Indenfor murene" i Jylland blev Holger Juul Hansen og Jesper Langberg transporteret til settet i ambulance. (Kilde: Wikipedia)');
+
 -- ── INDEXES ──────────────────────────────────────────────────
 CREATE INDEX IF NOT EXISTS idx_questions_type     ON questions(type);
 CREATE INDEX IF NOT EXISTS idx_questions_category ON questions(category);
