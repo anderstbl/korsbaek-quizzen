@@ -1,4 +1,4 @@
-# Korsbæk-quizzen 🎭
+# Matador-quizzen 🎭
 
 **Test din viden om Matador – den klassiske danske TV-serie fra 1929–1947.**
 
@@ -8,7 +8,7 @@
 
 ## Om projektet
 
-Korsbæk-quizzen er en browserbaseret quiz dedikeret til DR's ikoniske TV-serie *Matador* (1978–1982). Spillet trækker spørgsmål fra en live database og holder styr på en global highscore-liste, så du kan måle dig med andre Korsbæk-kendere.
+Matador-quizzen er en browserbaseret quiz dedikeret til DR's ikoniske TV-serie *Matador* (1978–1982). Spillet trækker spørgsmål fra en live database og holder styr på en global highscore-liste, så du kan måle dig med andre Korsbæk-kendere.
 
 Designet er inspireret af seriens æra – art deco, guldfarvede ornamenter, filmkorn og seriffen skrift fra 1930'erne.
 
@@ -16,7 +16,7 @@ Designet er inspireret af seriens æra – art deco, guldfarvede ornamenter, fil
 
 - **Flere spørgsmålstyper** – udfyld citater, gæt hvem der sagde det, sand/falsk-påstande, faktaspørgsmål og billedspørgsmål
 - **Combo & speedbonus** – svar hurtigt og rigtigt i træk for at score ekstra point
-- **Global highscore** – Top 100 over Korsbæks bedste kendere, gemt i Supabase
+- **Global highscore** – Top 100 over Matadors bedste kendere, gemt i Supabase
 - **Del din score** – knap til deling på sociale medier med Open Graph-preview
 - **Art Deco design** – guldfarvede dekorationer, filmkornsoverlay og 1930'er-typografi
 - **Mobilvenlig** – responsivt layout der virker på alle skærmstørrelser
