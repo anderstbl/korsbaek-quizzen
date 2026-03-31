@@ -341,11 +341,12 @@
 
     .round-badge {
       display: inline-block;
-      font-size: 10px;
-      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      padding: 4px 12px;
-      margin-bottom: 20px;
+      padding: 6px 16px;
+      margin-bottom: 22px;
       border: 1px solid;
     }
 
@@ -476,20 +477,21 @@
     .character-tag {
       display: block;
       font-family: 'Oswald', sans-serif;
-      font-size: 11px;
-      letter-spacing: 3px;
+      font-size: 13px;
+      letter-spacing: 2px;
       color: var(--text-dim);
-      margin-top: 12px;
+      margin-top: 14px;
       text-transform: uppercase;
     }
 
     .episode-tag {
       display: block;
       font-family: 'Oswald', sans-serif;
-      font-size: 10px;
-      letter-spacing: 2px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
       color: var(--gold-dark);
-      margin-top: 4px;
+      margin-top: 8px;
+      opacity: 0.9;
     }
 
     .options-grid {
@@ -1249,6 +1251,132 @@
     [data-theme="light"] .round-badge.billede    { color:#643a14; border-color:#643a14; background:rgba(100,58,20,0.07); }
     [data-theme="light"] .round-badge.skuespiller { color:#345c1e; border-color:#345c1e; background:rgba(52,92,30,0.07); }
 
+    /* ── NYE SPØRGSMÅL PANEL ── */
+    @keyframes newQGlow {
+      0%, 100% { box-shadow: 0 6px 24px rgba(0,0,0,0.75), 0 0  8px rgba(200,168,75,0.10); }
+      50%       { box-shadow: 0 6px 24px rgba(0,0,0,0.75), 0 0 22px rgba(200,168,75,0.38); }
+    }
+    #newQPanel {
+      /* Always gold — immune to light-theme green override */
+      --gold:       #c8a84b;
+      --gold-light: #f0d070;
+      --gold-dark:  #8a6f28;
+      --text:       #e8d5a0;
+      --text-dim:   #9a8050;
+      display: none;
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 192px;
+      background: #0d0600;
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      animation: newQGlow 3s ease-in-out infinite;
+      z-index: 50;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: visible; /* allow tail to bleed left */
+    }
+    /* Speech-bubble tail — rotated square poking out the left side */
+    #newQPanel::before {
+      content: '';
+      position: absolute;
+      left: -9px;
+      top: 26px;
+      width: 14px;
+      height: 14px;
+      background: #0d0600;
+      border-left:   2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+      border-radius: 0 0 0 3px;
+      transform: rotate(45deg);
+    }
+    @media (min-width: 980px) {
+      #newQPanel { display: flex; }
+    }
+
+    /* ── HEADER ── */
+    #newQPanel .nqp-header {
+      padding: 14px 14px 10px;
+      text-align: center;
+      border-bottom: 1px solid rgba(200,168,75,0.22);
+      border-radius: 6px 6px 0 0;
+    }
+    #newQPanel .nqp-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+    #newQPanel .nqp-subtitle {
+      font-family: 'Crete Round', serif;
+      font-size: 15px;
+      color: var(--gold-light);
+      font-style: italic;
+      margin-top: 1px;
+    }
+    #newQPanel .nqp-date {
+      font-family: 'Oswald', sans-serif;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    /* ── TEASERS ── */
+    #newQPanel .nqp-list {
+      padding: 10px 14px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    #newQPanel .nqp-item {
+      padding-left: 9px;
+      border-left: 2px solid var(--gold-dark);
+    }
+    #newQPanel .nqp-teaser {
+      font-family: 'Crete Round', serif;
+      font-size: 11px;
+      color: var(--text);
+      line-height: 1.45;
+      font-style: italic;
+    }
+    #newQPanel .nqp-meta {
+      font-family: 'Oswald', sans-serif;
+      font-size: 8px;
+      color: var(--text-dim);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* ── FOOTER ── */
+    #newQPanel .nqp-footer {
+      border-top: 1px solid rgba(200,168,75,0.22);
+      padding: 9px 14px 13px;
+    }
+    #newQPanel .nqp-play {
+      width: 100%;
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #0d0600;
+      background: var(--gold);
+      border: none;
+      padding: 8px 0;
+      cursor: pointer;
+      text-transform: uppercase;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+    #newQPanel .nqp-play:hover { background: var(--gold-light); }
+
   </style>
 </head>
 
@@ -1873,6 +2001,21 @@
     </div>
   </div>
 
+  <!-- ══ NYE SPØRGSMÅL PANEL (kun store skærme) ══ -->
+  <div id="newQPanel">
+    <div class="nqp-header">
+      <div class="nqp-title">Nye spørgsmål</div>
+      <div class="nqp-subtitle">hver dag!</div>
+      <div class="nqp-date" id="newQDate"></div>
+    </div>
+    <div class="nqp-list" id="newQList">
+      <div class="nqp-item"><div class="nqp-teaser" style="opacity:0.4">Henter…</div></div>
+    </div>
+    <div class="nqp-footer">
+      <button class="nqp-play" onclick="startGame()">SPIL NU</button>
+    </div>
+  </div>
+
   <!-- ══ LOADING ══ -->
   <div class="screen" id="screen-loading">
     <div class="logo-main" style="font-size:48px">MATADOR</div>
@@ -1987,15 +2130,15 @@
     const SB_KEY = 'sb_publishable_hW_ry0Xy-KobJMCPHRWrMA_i5wCAqg-';
 
     const BADGE_INFO = {
-      citat_fill: { text: '✦ UDFYLD REPLIKEN', cls: 'fill' },
-      citat_who: { text: '✦ HVEM SAGDE DET?', cls: 'who' },
-      citat_real: { text: '✦ ÆGTE ELLER OPFUNDET?', cls: 'real' },
-      handling: { text: '✦ HANDLINGEN', cls: 'handling' },
-      tidslinje: { text: '✦ TIDSLINJE', cls: 'tidslinje' },
-      relation: { text: '✦ RELATIONER', cls: 'relation' },
-      lokation: { text: '✦ LOKATION', cls: 'lokation' },
-      billede: { text: '✦ HVEM ER DETTE?', cls: 'billede' },
-      skuespiller: { text: '✦ SKUESPILLERNE', cls: 'skuespiller' },
+      citat_fill:  { text: '✦ UDFYLD REPLIKKEN',   cls: 'fill' },
+      citat_who:   { text: '✦ HVEM SAGDE DET?',    cls: 'who' },
+      citat_real:  { text: '✦ ÆGTE ELLER LØGN?',   cls: 'real' },
+      handling:    { text: '✦ HVAD SKETE DER?',    cls: 'handling' },
+      tidslinje:   { text: '✦ HVORNÅR SKETE DET?', cls: 'tidslinje' },
+      relation:    { text: '✦ HVAD ER FORHOLDET?', cls: 'relation' },
+      lokation:    { text: '✦ HVOR FOREGÅR DET?',  cls: 'lokation' },
+      billede:     { text: '✦ HVEM ER DETTE?',     cls: 'billede' },
+      skuespiller: { text: '✦ GÆT SKUESPILLEREN', cls: 'skuespiller' },
     };
 
     // In-memory question cache
@@ -2561,7 +2704,13 @@
     // ════════════════════════════════════════════
     // SCREENS
     // ════════════════════════════════════════════
-    function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      // Speech-bubble panel only on start screen
+      const nqp = document.getElementById('newQPanel');
+      if (nqp) nqp.style.display = (id === 'screen-start') ? '' : 'none';
+    }
 
     // ════════════════════════════════════════════
     // GAME
@@ -3149,8 +3298,93 @@
     // ════════════════════════════════════════════
     function shuf(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
 
+    // ── NYE SPØRGSMÅL PANEL ──
+    const CAT_LABELS = {
+      citat_fill: 'Citat · Udfyld',
+      citat_who:  'Citat · Hvem sagde',
+      citat_real: 'Ægte eller opdigtet',
+      handling:   'Handling',
+      tidslinje:  'Tidslinje',
+      relation:   'Relationer',
+      lokation:   'Lokation',
+      billede:    'Gæt karakteren',
+      skuespiller:'Skuespiller',
+    };
+
+    async function loadNewQuestions() {
+      const listEl = document.getElementById('newQList');
+      const dateEl = document.getElementById('newQDate');
+      if (!listEl) return;
+
+      // Build today's date range in ISO format
+      const now = new Date();
+      const todayStr = now.toISOString().slice(0, 10); // YYYY-MM-DD
+      const todayStart = todayStr + 'T00:00:00';
+
+      let rows = [];
+      try {
+        // Try today's questions first
+        rows = await sbFetch(
+          '/rest/v1/questions?select=category,question,episode,ep_title,created_at' +
+          '&active=eq.true&created_at=gte.' + todayStart +
+          '&order=created_at.desc&limit=20'
+        );
+        // If none today, fall back to most recently added batch
+        if (!rows.length) {
+          rows = await sbFetch(
+            '/rest/v1/questions?select=category,question,episode,ep_title,created_at' +
+            '&active=eq.true&order=created_at.desc&limit=5'
+          );
+        }
+      } catch (e) {
+        listEl.innerHTML = '<div class="nqp-item"><div class="nqp-teaser" style="opacity:0.4">Ikke tilgængelig</div></div>';
+        return;
+      }
+
+      if (!rows.length) {
+        listEl.innerHTML = '<div class="nqp-item"><div class="nqp-teaser" style="opacity:0.4">Ingen nye spørgsmål</div></div>';
+        return;
+      }
+
+      // Show date label from the newest question
+      const newestDate = new Date(rows[0].created_at);
+      const isToday = newestDate.toISOString().slice(0, 10) === todayStr;
+      if (dateEl) {
+        dateEl.textContent = isToday
+          ? 'Tilføjet i dag'
+          : newestDate.toLocaleDateString('da-DK', { day: 'numeric', month: 'long' });
+      }
+
+      // Show up to 4 teasers, rest as count
+      const shown = rows.slice(0, 2);
+      const rest  = rows.length - shown.length;
+
+      const items = shown.map(r => {
+        const cat    = CAT_LABELS[r.category] || r.category;
+        const qRaw   = r.question;
+        // Trim at a word boundary around 62 chars
+        const trimmed = qRaw.length > 62
+          ? qRaw.slice(0, qRaw.lastIndexOf(' ', 62) || 62) + '\u2026'
+          : qRaw;
+        const epLabel = r.episode ? `Afsnit ${r.episode}` : '';
+        return `<div class="nqp-item">
+          <div class="nqp-teaser">${trimmed}</div>
+          <div class="nqp-meta">${cat}${epLabel ? ' · ' + epLabel : ''}</div>
+        </div>`;
+      }).join('');
+
+      const moreHtml = rest > 0
+        ? `<div style="font-family:'Crete Round',serif;font-size:10px;color:var(--text-dim);text-align:center;padding:4px 0 2px;font-style:italic;">og ${rest} andre nye spørgsmål</div>`
+        : '';
+
+      listEl.innerHTML = items + moreHtml;
+    }
+
     // Load top 10 on homepage on startup
-    document.addEventListener('DOMContentLoaded', () => loadHomeTop10());
+    document.addEventListener('DOMContentLoaded', () => {
+      loadHomeTop10();
+      loadNewQuestions();
+    });
 
   </script>
 </body>
