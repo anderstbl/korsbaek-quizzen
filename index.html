@@ -2145,6 +2145,21 @@
     let QCACHE = null;
     let BONUS_CACHE = null;
 
+    // Track recently shown question IDs to avoid repetition
+    const SEEN_KEY = 'matador_seen_ids';
+    const SEEN_MAX = 120; // maks antal gemte "brugte" spørgsmål
+    function getSeenIds() {
+      try { return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')); } catch { return new Set(); }
+    }
+    function addSeenIds(ids) {
+      try {
+        let seen = JSON.parse(localStorage.getItem(SEEN_KEY) || '[]');
+        seen = [...seen, ...ids];
+        if (seen.length > SEEN_MAX) seen = seen.slice(seen.length - SEEN_MAX);
+        localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+      } catch {}
+    }
+
     async function sbFetch(path) {
       const r = await fetch(SB_URL + path, {
         headers: { apikey: SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }
@@ -2735,12 +2750,19 @@
         }));
       }
 
-      const fills = shuf(all.filter(q => q.cat === 'citat_fill'));
-      const whos = shuf(all.filter(q => q.cat === 'citat_who'));
-      const reals = shuf(all.filter(q => q.cat === 'citat_real'));
-      const facts = shuf(all.filter(q => ['handling', 'tidslinje', 'relation', 'lokation'].includes(q.cat)));
-      const billeder = shuf(all.filter(q => q.cat === 'billede'));
-      const skuesp = shuf(all.filter(q => q.cat === 'skuespiller'));
+      // Filtrer nyligt viste spørgsmål fra – fald tilbage til hele puljen hvis for lille
+      const seen = getSeenIds();
+      function freshFirst(arr) {
+        const fresh = arr.filter(q => !seen.has(q.q)); // brug spørgsmålstekst som nøgle
+        return fresh.length >= 3 ? shuf(fresh) : shuf(arr);
+      }
+
+      const fills = freshFirst(all.filter(q => q.cat === 'citat_fill'));
+      const whos = freshFirst(all.filter(q => q.cat === 'citat_who'));
+      const reals = freshFirst(all.filter(q => q.cat === 'citat_real'));
+      const facts = freshFirst(all.filter(q => ['handling', 'tidslinje', 'relation', 'lokation'].includes(q.cat)));
+      const billeder = freshFirst(all.filter(q => q.cat === 'billede'));
+      const skuesp = freshFirst(all.filter(q => q.cat === 'skuespiller'));
 
       // Build 15-question game: 3 fill, 3 who, 2 real, 3 fact, 2 billede, 2 skuespiller
       const seq = ['fill', 'who', 'fill', 'who', 'real', 'fact', 'fill', 'billede', 'who', 'skuespiller', 'fact', 'real', 'billede', 'skuespiller', 'fact'];
@@ -2755,6 +2777,7 @@
       });
 
       S.qs = pool.filter(Boolean);
+      addSeenIds(S.qs.map(q => q.q)); // gem viste spørgsmål i historik
       showScreen('screen-game');
       render();
     }
